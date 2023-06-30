@@ -1,0 +1,35 @@
+<div class="container text-center" style="overflow-x:auto">
+    <h1 class="text-center">All Posts</h1>
+
+    <table class="bg-dark table table-bordered">
+        <thead>
+            <tr class="text-white">
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Comments Enabled</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white text-center text-black">
+            {{#each posts}}
+            <tr>
+                <td>{{_id}}</td>
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{status}}</td>
+                <td>{{allowComments}}</td>
+                <td>{{category.title}}</td>
+                <td class="d-flex">
+                    <a href="posts/edit/{{_id}}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="posts/delete/{{_id}}?newMethod=DELETE" method="post">
+                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+      </table>
+</div>
