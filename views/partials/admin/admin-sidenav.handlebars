@@ -44,12 +44,23 @@
           </a>
         </li>
 
+        
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subjects">
-          <a class="nav-link" href="#">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSubjects" data-parent="#exampleAccordion">
             <i class="fa fa-book"></i>
-            <span class="nav-link-text">Subjects</span>
+            <span class="nav-link-text">Subject Management</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseSubjects">
+            <li>
+              <a href="/admin/subjects">All Subjects</a>
+            </li>
+            <li>
+              <a href="/admin/subjects/create">Create New Subject</a>
+            </li>
+          </ul>
         </li>
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Levels">
           <a class="nav-link" href="/admin/levels">
             <i class="fa fa-fw fa-link"></i>

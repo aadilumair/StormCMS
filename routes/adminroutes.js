@@ -52,4 +52,12 @@ router.route('/levels/edit/:id')
     .get(adminController.editLevel)
     .post(adminController.editLevelSubmit);
 
+
+//subject routes
+router.route('/subjects')
+    .get(adminController.getSubjects);
+
+router.route('/subjects/create')
+    .get(adminController.createSubjects);
+
 module.exports = router;

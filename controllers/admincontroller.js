@@ -1,6 +1,7 @@
 var Post = require('../models/PostModel');
 var Category = require('../models/CategoryModel');
 var Level = require('../models/LevelModel');
+var Subject = require('../models/SubjectModel');
 var {isEmpty} = require('../config/customFunctions');
 
 module.exports = {
@@ -205,6 +206,19 @@ editLevelSubmit: (req, res) => {
     }
     
 
+},
+
+//subjects
+getSubjects: (req, res) => {
+    Subject.find().populate('level').then(Subjects => {
+        res.render('admin/subjects/index', {subjects: Subjects});
+    });
+},
+
+createSubjects: (req, res) => {
+    Level.find().then(levs => {
+        res.render('admin/subjects/create', {Levels: levs});
+    });
 },
 
 };
