@@ -21,7 +21,7 @@ To install and run StormCMS locally, follow these steps:
 1. Clone the repository to your local directory:
 
    ```bash
-   git clone https://github.com/your-username/storm-cms.git
+   git clone https://github.com/aadilumair/StormCMS.git
    ```
 
 2. Create a `.env` file in the root directory of the project and add the following variables:
