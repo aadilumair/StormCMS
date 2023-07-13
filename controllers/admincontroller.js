@@ -221,4 +221,19 @@ createSubjects: (req, res) => {
     });
 },
 
+submitSubjects: (req, res) => {  
+    //TODO ADD VALIDATION
+    const newSubject = Subject({
+        title: req.body.title,
+        level: req.body.level
+        
+    });
+
+    newSubject.save().then(subject => {
+        console.log(subject); //Remove this in PRODUCTION
+        req.flash('success-message', "Subject created successfully");
+        res.redirect('/admin/subjects');
+    });
+},
+
 };

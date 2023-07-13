@@ -55,7 +55,8 @@ router.route('/levels/edit/:id')
 
 //subject routes
 router.route('/subjects')
-    .get(adminController.getSubjects);
+    .get(adminController.getSubjects)
+    .post(adminController.submitSubjects);
 
 router.route('/subjects/create')
     .get(adminController.createSubjects);
