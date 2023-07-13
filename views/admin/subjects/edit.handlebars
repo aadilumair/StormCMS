@@ -2,40 +2,23 @@
     <h1>Edit Subject</h1>
     <div class="row p-4">
         <div class="col-md-10">
-            <form action="/admin/posts/edit/{{post._id}}?newMethod=PUT" method="post">
+            <form action="/admin/subjects/edit/{{subject._id}}?newMethod=PUT" method="post">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" id="title" value="{{post.title}}"></input>
+                    <input type="text" class="form-control" name="title" id="title" value="{{subject.title}}"></input>
                 </div>
                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                        <option value="draft">Draft</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category" id="category" class="form-control">
-                        {{#select post.category}}
-                            {{#each categories}}
+                    <label for="level">Level</label>
+                    <select name="level" id="level" class="form-control">
+                        {{#select subject.level}}
+                            {{#each levels}}
                                 <option value="{{_id}}">{{title}}</option>
                             {{/each}}
                         {{/select}}
                     </select>
                 </div>
-                <div class="form-check ml-3">
-                    <label for="allowComments">
-                        <input type="checkbox" class="form-check-input" id="allowComments" name="allowComments">
-                        Allow Comments
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="10" >{{post.description}}</textarea>
-                </div>
-                <button class="btn btn-outline-warning btn-lg" type="submit">Edit Post</button>
+                
+                <button class="btn btn-outline-warning btn-lg" type="submit">Edit Subject</button>
             </form>
         </div>
     </div>

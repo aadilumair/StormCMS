@@ -61,4 +61,8 @@ router.route('/subjects')
 router.route('/subjects/create')
     .get(adminController.createSubjects);
 
+router.route('/subjects/edit/:id')
+    .get(adminController.editSubject)
+    .put(adminController.editSubjectUpdateRoute);
+
 module.exports = router;

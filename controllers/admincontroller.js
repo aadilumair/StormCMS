@@ -236,4 +236,36 @@ submitSubjects: (req, res) => {
     });
 },
 
+editSubject: (req, res) => {
+    var id = req.params.id;
+    Subject.findById(id)
+    .then(subject => {
+        
+        Level.find().then(levs =>{
+            res.render('admin/subjects/edit', {subject: subject, levels: levs});
+        });
+    })
+},
+
+editSubjectUpdateRoute: (req, res) => {
+    
+    const id = req.params.id;
+
+    Subject.findById(id)
+        .then(subject => {
+
+            subject.title = req.body.title;
+            subject.level = req.body.level;
+        
+
+
+            subject.save().then(updateSubject => {
+                req.flash('success-message', `The Subject ${updateSubject.title} has been updated.`);
+                res.redirect('/admin/subjects');
+
+            });
+        });
+
+},
+
 };

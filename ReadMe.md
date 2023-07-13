@@ -1,3 +1,0 @@
-#StormCMS
-
-##Install Method
