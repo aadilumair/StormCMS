@@ -52,6 +52,8 @@ router.route('/levels/edit/:id')
     .get(adminController.editLevel)
     .post(adminController.editLevelSubmit);
 
+router.route('/levels/delete/:id')
+    .delete(adminController.deleteLevels);
 
 //subject routes
 router.route('/subjects')
@@ -64,5 +66,8 @@ router.route('/subjects/create')
 router.route('/subjects/edit/:id')
     .get(adminController.editSubject)
     .put(adminController.editSubjectUpdateRoute);
+
+router.route('/subjects/delete/:id')
+    .delete(adminController.deleteSubjects);
 
 module.exports = router;

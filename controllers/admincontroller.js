@@ -208,6 +208,15 @@ editLevelSubmit: (req, res) => {
 
 },
 
+deleteLevels: (req, res) => {
+        
+    Level.findByIdAndDelete(req.params.id).then(deletedLevel => {
+        req.flash('success-message', `Level ${deletedLevel.title} has been successfully deleted.`);
+        res.redirect('/admin/levels')
+    });
+},
+
+
 //subjects
 getSubjects: (req, res) => {
     Subject.find().populate('level').then(Subjects => {
@@ -266,6 +275,14 @@ editSubjectUpdateRoute: (req, res) => {
             });
         });
 
+},
+
+deleteSubjects: (req, res) => {
+        
+    Subject.findByIdAndDelete(req.params.id).then(deletedSubject => {
+        req.flash('success-message', `Subject ${deletedSubject.title} has been successfully deleted.`);
+        res.redirect('/admin/subjects')
+    });
 },
 
 };
