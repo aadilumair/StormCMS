@@ -73,6 +73,8 @@ router.route('/subjects/delete/:id')
 //chapters
 router.route('/chapters')
     .get(adminController.getChapters)
+    .post(adminController.submitChapters);
+
 
 router.route('/chapters/create')
     .get(adminController.createChapters);

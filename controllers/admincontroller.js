@@ -300,4 +300,19 @@ createChapters: (req, res) => {
     });
 },
 
+submitChapters: (req, res) => {  
+    //TODO ADD VALIDATION
+    const newChapter = Chapter({
+        title: req.body.title,
+        subject: req.body.subject
+        
+    });
+
+    newChapter.save().then(chapter => {
+        console.log(chapter); //Remove this in PRODUCTION
+        req.flash('success-message', "Chapter created successfully");
+        res.redirect('/admin/chapters');
+    });
+},
+
 };
