@@ -79,5 +79,8 @@ router.route('/chapters')
 router.route('/chapters/create')
     .get(adminController.createChapters);
 
-
+router.route('/chapters/edit/:id')
+    .get(adminController.editChapter)
+    .put(adminController.editChapterSubmit);
+    
 module.exports = router;

@@ -315,4 +315,36 @@ submitChapters: (req, res) => {
     });
 },
 
+editChapter: (req, res) => {
+    var id = req.params.id;
+    Chapter.findById(id)
+    .then(chapter => {
+        
+        Subject.find().populate('level').then(subs =>{
+            res.render('admin/chapters/edit', {chapter: chapter, subjects: subs});
+        });
+    })
+},
+
+editChapterSubmit: (req, res) => {
+    
+    const id = req.params.id;
+
+    Chapter.findById(id)
+        .then(chapter => {
+
+            chapter.title = req.body.title;
+            chapter.subject = req.body.subject;
+        
+
+
+            chapter.save().then(updateChapter => {
+                req.flash('success-message', `The Chapter ${updateChapter.title} has been updated.`);
+                res.redirect('/admin/chapters');
+
+            });
+        });
+
+},
+
 };
