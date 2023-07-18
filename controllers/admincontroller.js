@@ -2,6 +2,8 @@ var Post = require('../models/PostModel');
 var Category = require('../models/CategoryModel');
 var Level = require('../models/LevelModel');
 var Subject = require('../models/SubjectModel');
+var Chapter = require('../models/ChapterModel');
+
 var {isEmpty} = require('../config/customFunctions');
 
 module.exports = {
@@ -282,6 +284,13 @@ deleteSubjects: (req, res) => {
     Subject.findByIdAndDelete(req.params.id).then(deletedSubject => {
         req.flash('success-message', `Subject ${deletedSubject.title} has been successfully deleted.`);
         res.redirect('/admin/subjects')
+    });
+},
+
+//chapters mechanism
+getChapters: (req, res) => {
+    Chapter.find().populate('subject').then(Chapters => {
+        res.render('admin/chapters/index', {chapters: Chapters});
     });
 },
 

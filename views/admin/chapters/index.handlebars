@@ -1,0 +1,55 @@
+<div class="container">
+
+
+    
+
+    <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> All Chapters</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Chapter</th>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Chapter</th>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+              </tfoot>
+              <tbody>
+            {{#each chapters}}
+                    <tr>
+
+                       <td>{{subject.title}}</td> 
+                        <td>{{title}}</td>
+                        <td class="d-flex justify-content-center">
+                            <a href="/admin/chapters/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
+                            <form action="/admin/chapters/delete/{{_id}}?newMethod=DELETE" method="post">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {{/each}}
+        </tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+
+
+    
+
+    <hr>
+
+
+
+</div>

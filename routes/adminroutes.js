@@ -70,4 +70,10 @@ router.route('/subjects/edit/:id')
 router.route('/subjects/delete/:id')
     .delete(adminController.deleteSubjects);
 
+//chapters
+router.route('/chapters')
+    .get(adminController.getChapters)
+
+
+
 module.exports = router;
