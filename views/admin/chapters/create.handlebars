@@ -1,23 +1,23 @@
 <div class="container">
-    <h1>Create New Subject</h1>
+    <h1>Create New Chapter</h1>
     <div class="row p-4">
         <div class="col-md-10">
-            <form action="/admin/subjects" method="post" enctype="multipart/form-data">
+            <form action="/admin/chapters" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" name="title" id="title"></input>
                 </div>
                 
                 <div class="form-group">
-                    <label for="level">Level</label>
-                    <select name="level" id="level" class="form-control">
-                        {{#each Levels}}
-                            <option value="{{_id}}">{{title}}</option>
+                    <label for="subject">Subject</label>
+                    <select name="subject" id="subject" class="form-control">
+                        {{#each Subjects}}
+                            <option value="{{_id}}">{{level.title}} {{title}}</option>
                         {{/each}}
                     </select>
                 </div>
                 
-                <button class="btn btn-outline-success btn-lg" type="submit">Create Subject</button>
+                <button class="btn btn-outline-success btn-lg" type="submit">Create Chapter</button>
             </form>
         </div>
     </div>

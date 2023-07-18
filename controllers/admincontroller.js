@@ -294,4 +294,10 @@ getChapters: (req, res) => {
     });
 },
 
+createChapters: (req, res) => {
+    Subject.find().populate('level').then(subs => {
+        res.render('admin/chapters/create', {Subjects: subs});
+    });
+},
+
 };

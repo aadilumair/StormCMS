@@ -74,6 +74,8 @@ router.route('/subjects/delete/:id')
 router.route('/chapters')
     .get(adminController.getChapters)
 
+router.route('/chapters/create')
+    .get(adminController.createChapters);
 
 
 module.exports = router;
