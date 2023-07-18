@@ -83,4 +83,8 @@ router.route('/chapters/edit/:id')
     .get(adminController.editChapter)
     .put(adminController.editChapterSubmit);
     
+router.route('/chapters/delete/:id')
+    .delete(adminController.deleteChapters);
+
+
 module.exports = router;

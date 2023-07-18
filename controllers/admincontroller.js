@@ -347,4 +347,12 @@ editChapterSubmit: (req, res) => {
 
 },
 
+deleteChapters: (req, res) => {
+        
+    Chapter.findByIdAndDelete(req.params.id).then(deletedChapter => {
+        req.flash('success-message', `Chapter ${deletedChapter.title} has been successfully deleted.`);
+        res.redirect('/admin/chapters')
+    });
+},
+
 };
