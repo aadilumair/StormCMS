@@ -1,0 +1,38 @@
+
+
+<div class="row" style="padding: 3%;">
+        <div class="col-12">
+          <div class="mb-0 mt-4">
+            <i class="fa fa-file"></i> All Files</div>
+          <hr class="mt-2">
+          <div class="card-columns">
+            {{#each files}}
+            <div class="card mb-3">
+              <a href="#">
+                <img class="card-img-top img-fluid w-100" src="{{filepath}}" alt="{{title}}">
+              </a>
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{user.firstname}} {{user.lastname}}</h6>
+                <p class="card-text small">{{title}}</p>
+              </div>
+              <hr class="my-0">
+              <div class="card-body py-2 small">
+                {{tags}}
+              </div>
+              <hr class="my-0">
+              <div class="card-body py-2 small">
+                
+                <a class="d-inline-block" href="{{filepath}}" target=”_blank”>
+                  <i class="fa fa-fw fa-share"></i>Get Link
+                </a>
+              </div>
+              <hr class="my-0">
+              
+              <div class="card-footer small text-muted">Uploaded on {{dateCreated}}</div>
+            </div>
+            {{/each}}
+          </div>
+          <!-- /Card Columns-->
+        </div>
+        </div>
+      </div>

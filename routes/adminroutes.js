@@ -86,5 +86,9 @@ router.route('/chapters/edit/:id')
 router.route('/chapters/delete/:id')
     .delete(adminController.deleteChapters);
 
+//file uploads
+
+router.route('/fileuploads')
+    .get(adminController.getFiles);
 
 module.exports = router;

@@ -3,6 +3,7 @@ var Category = require('../models/CategoryModel');
 var Level = require('../models/LevelModel');
 var Subject = require('../models/SubjectModel');
 var Chapter = require('../models/ChapterModel');
+var File = require('../models/FileModel');
 
 var {isEmpty} = require('../config/customFunctions');
 
@@ -354,5 +355,15 @@ deleteChapters: (req, res) => {
         res.redirect('/admin/chapters')
     });
 },
+
+//file uploads
+
+getFiles: (req, res) => {
+    File.find().populate('user').then(files => {
+        res.render('admin/fileUploads/index', {files: files});
+    });
+},
+
+
 
 };
