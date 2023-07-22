@@ -65,9 +65,7 @@ router.route('/login')
         session: true
     }) ,defaultController.loginPost);
 
-router.route('/register')
-    .get(defaultController.registerGet)
-    .post(defaultController.registerPost);
+
 
 
 

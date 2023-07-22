@@ -19,56 +19,56 @@ module.exports = {
         
     },
 
-    registerGet: (req, res) => {
-        res.render('default/register');
-    },
+    // registerGet: (req, res) => {
+    //     res.render('default/register');
+    // },
     
-    registerPost: (req, res) => {
-        let errors = [];
-        if(!req.body.firstName){
-            errors.push({message: 'First Name is mandatory'});
-        }
-        if(!req.body.lastName){
-            errors.push({message: 'Last Name is mandatory'});
-        }
-        if(!req.body.email){
-            errors.push({message: 'Email is mandatory'});
-        }
-        if(req.body.password!=req.body.passwordConfirm){
-            errors.push({password: 'Passwords do not match'});
-        }
+    // registerPost: (req, res) => {
+    //     let errors = [];
+    //     if(!req.body.firstName){
+    //         errors.push({message: 'First Name is mandatory'});
+    //     }
+    //     if(!req.body.lastName){
+    //         errors.push({message: 'Last Name is mandatory'});
+    //     }
+    //     if(!req.body.email){
+    //         errors.push({message: 'Email is mandatory'});
+    //     }
+    //     if(req.body.password!=req.body.passwordConfirm){
+    //         errors.push({password: 'Passwords do not match'});
+    //     }
         
-        if(errors.length>0){
-            res.render('default/register', {
-                errors: errors,
-                firstName: req.body.firstName,
-                lastName:req.body.lastName,
-                email:req.body.email,
-            })
-        }
-        else {
-            User.findOne({email:req.body.email}).then(user => {
-                if(user){
-                    req.flash("error-message", 'Email in use, please try logging in');
-                    res.redirect('/login');
-                }
-                else {
-                    var newUser = new User(req.body);
+    //     if(errors.length>0){
+    //         res.render('default/register', {
+    //             errors: errors,
+    //             firstName: req.body.firstName,
+    //             lastName:req.body.lastName,
+    //             email:req.body.email,
+    //         })
+    //     }
+    //     else {
+    //         User.findOne({email:req.body.email}).then(user => {
+    //             if(user){
+    //                 req.flash("error-message", 'Email in use, please try logging in');
+    //                 res.redirect('/login');
+    //             }
+    //             else {
+    //                 var newUser = new User(req.body);
 
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.password, salt, (err, hash)=> {
-                            newUser.password = hash;
-                            newUser.save().then(user => {
-                                req.flash('success-message',"Registeration successful");
-                                res.redirect('/login');
-                            });
-                        });
-                    });
-                }
-            });
-        }
+    //                 bcrypt.genSalt(10, (err, salt) => {
+    //                     bcrypt.hash(newUser.password, salt, (err, hash)=> {
+    //                         newUser.password = hash;
+    //                         newUser.save().then(user => {
+    //                             req.flash('success-message',"Registeration successful");
+    //                             res.redirect('/login');
+    //                         });
+    //                     });
+    //                 });
+    //             }
+    //         });
+    //     }
 
-    },
+    // },
 
     admin: (req, res) => {
         res.render('default/admin');
