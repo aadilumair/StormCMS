@@ -24,7 +24,7 @@ module.exports = {
         
         let filename = "";
 
-        console.log(req.files);
+        console.log(req.files); //remove in prod
         
         if(!isEmpty(req.files)){
             let File = req.files.uploadedFile;
@@ -162,7 +162,7 @@ editCategorySubmit: (req, res) => {
 //Level Control
 getLevels: (req, res) => {
     Level.find().then(Levels => {
-        res.render('admin/Levels/index', {levels: Levels});
+        res.render('admin/levels/index', {levels: Levels});
     });
 },
 
@@ -364,6 +364,9 @@ getFiles: (req, res) => {
     });
 },
 
+createFiles: (req, res) => {
+    res.render('admin/fileUploads/create');
+},
 
 
 };

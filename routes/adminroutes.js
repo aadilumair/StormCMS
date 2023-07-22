@@ -91,4 +91,7 @@ router.route('/chapters/delete/:id')
 router.route('/fileuploads')
     .get(adminController.getFiles);
 
+router.route('/fileuploads/create')
+    .get(adminController.createFiles);
+
 module.exports = router;
