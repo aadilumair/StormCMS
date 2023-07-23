@@ -89,7 +89,8 @@ router.route('/chapters/delete/:id')
 //file uploads
 
 router.route('/fileuploads')
-    .get(adminController.getFiles);
+    .get(adminController.getFiles)
+    .post(adminController.submitFiles);
 
 router.route('/fileuploads/create')
     .get(adminController.createFiles);

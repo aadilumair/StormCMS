@@ -368,5 +368,40 @@ createFiles: (req, res) => {
     res.render('admin/fileUploads/create');
 },
 
+submitFiles: (req, res) =>{
+    let filename = "";
+
+        console.log(req.files); //remove in prod
+        
+        if(!isEmpty(req.files)){
+            let File = req.files.uploadedFile;
+            filename = File.name;
+            let uploadDir = './public/uploads/';
+            //let timestamp = Date.now().getUTCSeconds();
+            //console.log(timestamp);
+            console.log(uploadDir+filename);
+            File.mv(uploadDir+filename, (err) =>{
+                if(err)
+                    throw err;
+            } );
+        }
+        
+        //TODO ADD VALIDATION
+        const newFile = File({
+            title: req.body.title,
+            tags: req.body.tags,
+            type: req.body.type,
+            //status: req.body.status,
+            
+            filepath: `/uploads/${filename}`
+            
+        });
+
+        newFile.save().then(file => {
+            console.log(file); //Remove this in PRODUCTION
+            req.flash('success-message', "File uploaded successfully");
+            res.redirect('/admin/fileUploads');
+        });
+},
 
 };

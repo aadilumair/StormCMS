@@ -9,7 +9,7 @@
             {{#each files}}
             <div class="card mb-3">
               <a href="#">
-                <img class="card-img-top img-fluid w-100" src="{{filepath}}" alt="{{title}}">
+                <img class="card-img-top img-fluid w-100" src="{{filepath}}" alt="{{title}}" onerror="this.onerror=null; this.src='/uploads/defaultImg.png'">
               </a>
               <div class="card-body">
                 <h6 class="card-title mb-1">{{user.firstname}} {{user.lastname}}</h6>

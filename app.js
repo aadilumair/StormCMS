@@ -57,6 +57,8 @@ app.engine('handlebars', hbs.engine({defaultLayout: 'default',runtimeOptions: {a
 
 app.set('view engine' , 'handlebars');
 
+
+
 //method override
 app.use(methodOverride("newMethod"));
 
