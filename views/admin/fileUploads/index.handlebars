@@ -21,10 +21,16 @@
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">
-                
-                <a class="d-inline-block" href="{{filepath}}" target=”_blank”>
+                <div class="d-flex">
+                <a class="d-inline-block" style="padding-right:5%" href="{{filepath}}" target=”_blank”>
                   <i class="fa fa-fw fa-share"></i>Get Link
                 </a>
+                
+
+                <form action="/admin/fileUploads/delete/{{_id}}?newMethod=DELETE" method="post">
+                  <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                </form>
+                </div>
               </div>
               <hr class="my-0">
               

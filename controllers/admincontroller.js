@@ -375,11 +375,12 @@ submitFiles: (req, res) =>{
         
         if(!isEmpty(req.files)){
             let File = req.files.uploadedFile;
-            filename = File.name;
+            let timestamp = Date.now();
+            filename = timestamp + File.name;
             let uploadDir = './public/uploads/';
-            //let timestamp = Date.now().getUTCSeconds();
-            //console.log(timestamp);
-            console.log(uploadDir+filename);
+            
+            
+            
             File.mv(uploadDir+filename, (err) =>{
                 if(err)
                     throw err;
@@ -403,5 +404,15 @@ submitFiles: (req, res) =>{
             res.redirect('/admin/fileUploads');
         });
 },
+
+// deleteFiles: (req, res) => {
+        
+//     File.findByIdAndDelete(req.params.id).then(deletedFile => {
+        
+        
+//         req.flash('success-message', `File ${deletedFile.title} has been successfully deleted.`);
+//         res.redirect('/admin/fileUploads')
+//     });
+// },
 
 };
