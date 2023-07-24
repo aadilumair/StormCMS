@@ -95,4 +95,7 @@ router.route('/fileuploads')
 router.route('/fileuploads/create')
     .get(adminController.createFiles);
 
+router.route('/fileuploads/delete/:id')
+    .delete(adminController.deleteFiles);
+
 module.exports = router;

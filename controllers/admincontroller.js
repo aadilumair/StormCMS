@@ -4,6 +4,7 @@ var Level = require('../models/LevelModel');
 var Subject = require('../models/SubjectModel');
 var Chapter = require('../models/ChapterModel');
 var File = require('../models/FileModel');
+var fs = require('fs');
 
 var {isEmpty} = require('../config/customFunctions');
 
@@ -405,14 +406,25 @@ submitFiles: (req, res) =>{
         });
 },
 
-// deleteFiles: (req, res) => {
+deleteFiles: (req, res) => {
         
-//     File.findByIdAndDelete(req.params.id).then(deletedFile => {
+    File.findByIdAndDelete(req.params.id).then(deletedFile => {
         
-        
-//         req.flash('success-message', `File ${deletedFile.title} has been successfully deleted.`);
-//         res.redirect('/admin/fileUploads')
-//     });
-// },
+        let path ='./public'+deletedFile.filepath;
+
+        fs.unlink(path, (err) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+          
+            //file removed
+          })
+          
+          
+        req.flash('success-message', `File ${deletedFile.title} has been successfully deleted.`);
+        res.redirect('/admin/fileUploads')
+    });
+},
 
 };
