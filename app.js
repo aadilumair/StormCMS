@@ -51,7 +51,12 @@ app.use(globalVariables);
 
 
 //fileupload
-app.use(fileupload());
+app.use(fileupload({
+    limits: {
+        fileSize: 3000000 //1mb
+    },
+    abortOnLimit: true
+ }));
 
 
 //View engine with handlebars setup
