@@ -98,4 +98,15 @@ router.route('/fileuploads/create')
 router.route('/fileuploads/delete/:id')
     .delete(adminController.deleteFiles);
 
+//users
+
+router.route('/users')
+    .get(adminController.getUsers)
+    .post(adminController.registerPost);
+
+router.route('/users/create')
+    .get(adminController.registerGet);
+    
+
+
 module.exports = router;

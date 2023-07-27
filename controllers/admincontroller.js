@@ -4,6 +4,9 @@ var Level = require('../models/LevelModel');
 var Subject = require('../models/SubjectModel');
 var Chapter = require('../models/ChapterModel');
 var File = require('../models/FileModel');
+var User = require('../models/UserModel');
+
+var bcrypt = require('bcryptjs');
 var fs = require('fs');
 
 var {isEmpty} = require('../config/customFunctions');
@@ -426,5 +429,62 @@ deleteFiles: (req, res) => {
         res.redirect('/admin/fileUploads')
     });
 },
+//users
+
+getUsers: (req, res) => {
+    res.render('admin/users');
+},
+
+
+registerGet: (req, res) => {
+        res.render('admin/users/create');
+    },
+    
+registerPost: (req, res) => {
+        let errors = [];
+        if(!req.body.firstName){
+            errors.push({message: 'First Name is mandatory'});
+        }
+        if(!req.body.lastName){
+            errors.push({message: 'Last Name is mandatory'});
+        }
+        if(!req.body.email){
+            errors.push({message: 'Email is mandatory'});
+        }
+        if(req.body.password!=req.body.passwordConfirm){
+            errors.push({password: 'Passwords do not match'});
+        }
+        
+        if(errors.length>0){
+            res.render('/admin/users/create', {
+                errors: errors,
+                firstName: req.body.firstName,
+                lastName:req.body.lastName,
+                email:req.body.email,
+            })
+        }
+        else {
+            User.findOne({email:req.body.email}).then(user => {
+                if(user){
+                    req.flash("error-message", 'Email in use, please try a different one');
+                    res.redirect('/admin/users/create');
+                }
+                else {
+                    var newUser = new User(req.body);
+
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash)=> {
+                            newUser.password = hash;
+                            newUser.save().then(user => {
+                                req.flash('success-message',"Registeration successful");
+                                res.redirect('/admin/users');
+                            });
+                        });
+                    });
+                }
+            });
+        }
+
+    },
 
 };
