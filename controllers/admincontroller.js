@@ -432,7 +432,9 @@ deleteFiles: (req, res) => {
 //users
 
 getUsers: (req, res) => {
-    res.render('admin/users');
+    User.find().then(Users => {
+        res.render('admin/users/index', {users: Users});
+    });
 },
 
 
