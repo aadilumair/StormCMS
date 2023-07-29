@@ -106,7 +106,11 @@ router.route('/users')
 
 router.route('/users/create')
     .get(adminController.registerGet);
-    
+
+router.route('/users/edit/:id')
+    .get(adminController.editUser)
+    .post(adminController.editUserSubmit);
+
 
 
 module.exports = router;

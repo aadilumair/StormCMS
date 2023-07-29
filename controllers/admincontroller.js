@@ -489,4 +489,73 @@ registerPost: (req, res) => {
 
     },
 
+    editUser: (req, res) => {
+        var id = req.params.id;
+        User.findById(id)
+        .then(user => {
+            res.render('admin/users/edit', {User: user});
+            
+        })
+    },
+
+    editUserSubmit: (req, res) => {
+    
+        const id = req.params.id;
+        let errors = [];
+        if(!req.body.firstName){
+            errors.push({message: 'First Name is mandatory'});
+        }
+        if(!req.body.lastName){
+            errors.push({message: 'Last Name is mandatory'});
+        }
+        
+        if((req.body.password)&&(req.body.password!=req.body.passwordConfirm)){
+            errors.push({password: 'Passwords do not match'});
+        }
+        
+        if(errors.length>0){
+            User.findById(id)
+                .then(user => {
+                    res.render('admin/users/edit', {User: user, errors: errors});
+            
+                })
+            
+            
+        }
+        else
+        {
+            User.findById(id)
+                .then(user => {
+    
+                    user.firstName=req.body.firstName;
+                    user.lastName=req.body.lastName;
+                    
+                    if(req.body.password)
+                    {
+                    
+                    
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(req.body.password, salt, (err, hash)=> {
+                                user.password = hash;
+                                    user.save().then(updateUser => {
+                                    req.flash('success-message', `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`);
+                                    res.redirect('/admin/users');
+                                });
+                            });
+                        });
+                    }
+                    else
+                    {
+    
+    
+                        user.save().then(updateUser => {
+                        req.flash('success-message', `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`);
+                        res.redirect('/admin/users');
+                                       
+                    });
+                    }
+                });
+        }
+    },
+
 };
