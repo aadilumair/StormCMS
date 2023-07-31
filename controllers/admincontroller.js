@@ -26,9 +26,6 @@ module.exports = {
     },
 
     submitPosts: (req, res) => {
-        
-        
-        
         //TODO ADD VALIDATION
         const newPost = Post({
             title: req.body.title,
@@ -36,10 +33,7 @@ module.exports = {
             status: req.body.status,
             chapter: req.body.chapter,
             position:req.body.position,
-            user:req.user.id,
-            
-            
-            
+            user:req.user.id,    
         });
 
         newPost.save().then(post => {
@@ -57,12 +51,11 @@ module.exports = {
 
     editPosts: (req, res) => {
         var id = req.params.id;
-        Post.findById(id)
+        Post.findById(id).populate({path:'chapter',populate: {path: 'subject', populate: {path: 'level'} }})
         .then(post => {
-            
-            Category.find().then(cats =>{
-                res.render('admin/posts/edit', {post: post, categories: cats});
-            });
+            Chapter.find().populate({path: 'subject', populate: {path: 'level'} }).then(chapts => {
+                res.render('admin/posts/edit', {post: post, Chapters: chapts});
+            })
         })
     }, 
 

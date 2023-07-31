@@ -8,28 +8,25 @@
                     <input type="text" class="form-control" name="title" id="title" value="{{post.title}}"></input>
                 </div>
                 <div class="form-group">
+                    <label for="position">Position (This reflects the order in which post will be displayed)</label>
+                    <input type="number" class="form-control" name="position" id="position" value="{{post.position}}"></input>
+                </div>
+                <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" id="status" class="form-control">
+                        <option value="{{post.status}}" selected>{{post.status}}</option>
                         <option value="public">Public</option>
                         <option value="private">Private</option>
-                        <option value="draft">Draft</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category" id="category" class="form-control">
-                        {{#select post.category}}
-                            {{#each categories}}
-                                <option value="{{_id}}">{{title}}</option>
-                            {{/each}}
-                        {{/select}}
+                    <label for="chapter">Chapter</label>
+                    <select name="chapter" id="chapter" class="form-control">
+                        <option value="{{post.chapter._id}}">{{post.chapter.subject.level.title}} {{post.chapter.subject.title}}: {{post.chapter.title}}</option>
+                        {{#each Chapters}}
+                            <option value="{{_id}}">{{subject.level.title}} {{subject.title}}: {{title}}</option>
+                        {{/each}}
                     </select>
-                </div>
-                <div class="form-check ml-3">
-                    <label for="allowComments">
-                        <input type="checkbox" class="form-check-input" id="allowComments" name="allowComments">
-                        Allow Comments
-                    </label>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
