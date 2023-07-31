@@ -9,35 +9,35 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                <th>ID</th>
+                <th>Subject</th>
+                <th>Chapter</th>
                 <th>Title</th>
-                <th>Description</th>
                 <th>Status</th>
-                <th>Comments Enabled</th>
-                <th>Category</th>
+                <th>Date Uploaded</th>
+                <th>Author</th>
                 <th>Actions</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>ID</th>
+                <th>Subject</th>
+                <th>Chapter</th>
                 <th>Title</th>
-                <th>Description</th>
                 <th>Status</th>
-                <th>Comments Enabled</th>
-                <th>Category</th>
+                <th>Date Uploaded</th>
+                <th>Author</th>
                 <th>Actions</th>
                 </tr>
               </tfoot>
               <tbody>
                 {{#each posts}}
             <tr>
-                <td>{{_id}}</td>
+                <td>{{chapter.subject.level.title}} {{chapter.subject.title}}</td>
+                <td>{{chapter.title}}</td>
                 <td>{{title}}</td>
-                <td>{{description}}</td>
                 <td>{{status}}</td>
-                <td>{{allowComments}}</td>
-                <td>{{category.title}}</td>
+                <td>{{dateCreated}}</td>
+                <td>{{user.firstName}} {{user.lastName}}</td>
                 <td class="d-flex">
                     <a href="posts/edit/{{_id}}" class="btn btn-sm btn-warning">Edit</a>
                     <form action="posts/delete/{{_id}}?newMethod=DELETE" method="post">

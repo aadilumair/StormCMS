@@ -19,7 +19,7 @@ module.exports = {
 
     //Posts control
     getPosts: (req, res) => {
-        Post.find().populate('chapter').then(posts => {
+        Post.find().populate({path:'chapter',populate: {path: 'subject', populate: {path: 'level'} }}).populate('user').then(posts => {
             res.render('admin/posts/index', {posts: posts});
             
         });
