@@ -60,19 +60,17 @@ module.exports = {
     }, 
 
     editPostUpdateRoute: (req, res) => {
-        const commentsAllowed = req.body.allowComments ? true : false;
-
-
         const id = req.params.id;
 
         Post.findById(id)
             .then(post => {
 
                 post.title = req.body.title;
-                post.status = req.body.status;
-                post.allowComments = req.body.allowComments;
                 post.description = req.body.description;
-                post.category = req.body.category;
+                post.status = req.body.status;
+                post.chapter = req.body.chapter;
+                post.position = req.body.position;
+                post.user = req.user.id;
 
 
                 post.save().then(updatePost => {
