@@ -71,7 +71,7 @@ module.exports = {
                 post.chapter = req.body.chapter;
                 post.position = req.body.position;
                 post.user = req.user.id;
-
+ 
 
                 post.save().then(updatePost => {
                     req.flash('success-message', `The Post ${updatePost.title} has been updated.`);
