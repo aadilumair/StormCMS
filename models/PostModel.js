@@ -28,25 +28,17 @@ var PostSchema = new Schema({
         ref: 'user'
     },
 
-    category:{
+    chapter:{
         type: Schema.Types.ObjectId,
-        ref: 'category'
+        ref: 'chapter'
     },
 
-    comments:[{
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
-    }],
+    position:{
+        type: Number,
 
-    allowComments:{
-        type: Boolean,
-        default: false 
     },
 
-    file: {
-        type: String,
-        default: ''
-    }
+    
 
 });
 

@@ -19,37 +19,26 @@ module.exports = {
 
     //Posts control
     getPosts: (req, res) => {
-        Post.find().populate('category').then(posts => {
+        Post.find().populate('chapter').then(posts => {
             res.render('admin/posts/index', {posts: posts});
+            
         });
     },
 
     submitPosts: (req, res) => {
         
-        let filename = "";
-
-        console.log(req.files); //remove in prod
         
-        if(!isEmpty(req.files)){
-            let File = req.files.uploadedFile;
-            filename = File.name;
-            let uploadDir = './public/uploads/';
-            console.log(uploadDir+filename);
-            File.mv(uploadDir+filename, (err) =>{
-                if(err)
-                    throw err;
-            } );
-        }
         
         //TODO ADD VALIDATION
         const newPost = Post({
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            status: req.body.status,
-            allowComments: req.body.allowComments? true: false,
-            category: req.body.category,
-            file: `./uploads/${filename}`
+            chapter: req.body.chapter,
+            position:req.body.position,
+            user:req.user.id,
+            
+            
             
         });
 
@@ -61,8 +50,8 @@ module.exports = {
     },
 
     createPosts: (req, res) => {
-        Category.find().then(cats => {
-            res.render('admin/posts/create', {Categories: cats});
+        Chapter.find().populate({path: 'subject', populate: {path: 'level'} }).then(chapts => {
+            res.render('admin/posts/create', {Chapters: chapts});
         });
     },
 
@@ -294,7 +283,7 @@ deleteSubjects: (req, res) => {
 
 //chapters mechanism
 getChapters: (req, res) => {
-    Chapter.find().populate('subject').then(Chapters => {
+    Chapter.find().populate({path: 'subject', populate: {path: 'level'} }).then(Chapters => {
         res.render('admin/chapters/index', {chapters: Chapters});
     });
 },

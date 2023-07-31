@@ -11,14 +11,16 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Chapter</th>
+                    <th>Level</th>
+                    <th>Subject</th>
                     <th>Title</th>
                     <th>Action</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Chapter</th>
+                    <th>Level</th>
+                    <th>Subject</th>
                     <th>Title</th>
                     <th>Action</th>
                 </tr>
@@ -26,7 +28,7 @@
               <tbody>
             {{#each chapters}}
                     <tr>
-
+                        <td>{{subject.level.title}}</td>
                        <td>{{subject.title}}</td> 
                         <td>{{title}}</td>
                         <td class="d-flex justify-content-center">

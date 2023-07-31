@@ -8,31 +8,25 @@
                     <input type="text" class="form-control" name="title" id="title"></input>
                 </div>
                 <div class="form-group">
-                    <label for="file">Cover Photo Upload</label>
-                    <input type="file" class="form-control" id="file" name="uploadedFile">
+                    <label for="position">Position (This reflects the order in which post will be displayed)</label>
+                    <input type="number" class="form-control" name="position" id="position"></input>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="public">Public</option>
                         <option value="private">Private</option>
-                        <option value="draft">Draft</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category" id="category" class="form-control">
-                        {{#each Categories}}
-                            <option value="{{_id}}">{{title}}</option>
+                    <label for="chapter">Chapter</label>
+                    <select name="chapter" id="chapter" class="form-control">
+                        {{#each Chapters}}
+                            <option value="{{_id}}">{{subject.level.title}} {{subject.title}}: {{title}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="form-check ml-3">
-                    <label for="allowComments">
-                        <input type="checkbox" class="form-check-input" id="allowComments" name="allowComments">
-                        Allow Comments
-                    </label>
-                </div>
+                
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control" rows="10"></textarea>
