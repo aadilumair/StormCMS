@@ -206,7 +206,7 @@ deleteLevels: (req, res) => {
 
 //subjects
 getSubjects: (req, res) => {
-    Subject.find().populate('level').then(Subjects => {
+    Subject.find().populate('level').populate('user').then(Subjects => {
         res.render('admin/subjects/index', {subjects: Subjects});
     });
 },
@@ -221,7 +221,8 @@ submitSubjects: (req, res) => {
     //TODO ADD VALIDATION
     const newSubject = Subject({
         title: req.body.title,
-        level: req.body.level
+        level: req.body.level,
+        user:req.user.id,
         
     });
 

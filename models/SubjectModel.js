@@ -11,7 +11,12 @@ var SubjectSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'level'
     },
-
+    
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    
     dateCreated: {
         type: Date,
         default: Date.now()

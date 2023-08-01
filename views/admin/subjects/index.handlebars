@@ -13,6 +13,8 @@
                 <tr>
                   <th>Level</th>
                     <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </thead>
@@ -20,6 +22,8 @@
                 <tr>
                   <th>Level</th>
                     <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </tfoot>
@@ -29,6 +33,8 @@
 
                        <td>{{level.title}}</td> 
                         <td>{{title}}</td>
+                        <td>{{user.firstName}} {{user.lastName}}</td>
+                        <td>{{dateCreated}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="/admin/subjects/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
                             <form action="/admin/subjects/delete/{{_id}}?newMethod=DELETE" method="post">
