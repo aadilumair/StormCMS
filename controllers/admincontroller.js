@@ -274,7 +274,7 @@ deleteSubjects: (req, res) => {
 
 //chapters mechanism
 getChapters: (req, res) => {
-    Chapter.find().populate({path: 'subject', populate: {path: 'level'} }).then(Chapters => {
+    Chapter.find().populate({path: 'subject', populate: {path: 'level'} }).populate('user').then(Chapters => {
         res.render('admin/chapters/index', {chapters: Chapters});
     });
 },
@@ -289,7 +289,9 @@ submitChapters: (req, res) => {
     //TODO ADD VALIDATION
     const newChapter = Chapter({
         title: req.body.title,
-        subject: req.body.subject
+        subject: req.body.subject,
+        position:req.body.position,
+        user:req.user.id,
         
     });
 
@@ -320,7 +322,7 @@ editChapterSubmit: (req, res) => {
 
             chapter.title = req.body.title;
             chapter.subject = req.body.subject;
-        
+            chapter.position = req.body.position;
 
 
             chapter.save().then(updateChapter => {

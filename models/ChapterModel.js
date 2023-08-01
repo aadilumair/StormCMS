@@ -11,6 +11,16 @@ var ChapterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'subject'
     },
+    
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    
+    position:{
+        type: Number,
+
+    },
 
     dateCreated: {
         type: Date,

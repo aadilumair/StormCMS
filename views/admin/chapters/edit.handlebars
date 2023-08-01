@@ -8,6 +8,10 @@
                     <input type="text" class="form-control" name="title" id="title" value="{{chapter.title}}"></input>
                 </div>
                 <div class="form-group">
+                    <label for="position">Position (This reflects the order in which post will be displayed)</label>
+                    <input type="number" class="form-control" name="position" id="position" value="{{chapter.position}}"></input>
+                </div>
+                <div class="form-group">
                     <label for="subject">Subject</label>
                     <select name="subject" id="subject" class="form-control">
                         {{#select chapter.subject}}
