@@ -16,6 +16,7 @@
                     <th>Title</th>
                     <th>Position</th>
                     <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </thead>
@@ -26,6 +27,7 @@
                     <th>Title</th>
                     <th>Position</th>
                     <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </tfoot>
@@ -37,6 +39,7 @@
                         <td>{{title}}</td>
                         <td>{{position}}</td>
                         <td>{{user.firstName}} {{user.lastName}}</td>
+                        <td>{{dateCreated}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="/admin/chapters/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
                             <form action="/admin/chapters/delete/{{_id}}?newMethod=DELETE" method="post">
