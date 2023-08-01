@@ -222,7 +222,7 @@ submitSubjects: (req, res) => {
     const newSubject = Subject({
         title: req.body.title,
         level: req.body.level,
-        user:req.user.id,
+         user:req.user.id,
         
     });
 
