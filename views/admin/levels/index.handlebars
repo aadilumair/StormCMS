@@ -13,12 +13,16 @@
               <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
                     <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
               </tfoot>
@@ -27,6 +31,8 @@
                     <tr>
 
                         <td>{{title}}</td>
+                        <td>{{user.firstName}} {{user.lastName}}</td>
+                        <td>{{dateCreated}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="/admin/levels/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
                             <form action="/admin/levels/delete/{{_id}}?newMethod=DELETE" method="post">

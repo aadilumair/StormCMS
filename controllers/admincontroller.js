@@ -145,7 +145,7 @@ editCategorySubmit: (req, res) => {
 
 //Level Control
 getLevels: (req, res) => {
-    Level.find().then(Levels => {
+    Level.find().populate('user').then(Levels => {
         res.render('admin/levels/index', {levels: Levels});
     });
 },
@@ -153,7 +153,8 @@ getLevels: (req, res) => {
 createLevels: (req, res) => {
     if (req.body.name){
         var newLevel = new Level({
-            title: req.body.name
+            title: req.body.name,
+            user:req.user.id,
         });
 
         newLevel.save().then(level =>{
@@ -166,7 +167,7 @@ editLevel: (req, res) => {
     var id = req.params.id;
     
     Level.find().then(levels => {
-        Level.findById(id).then(level => {
+        Level.findById(id).populate('user').then(level => {
             res.render('admin/levels/edit', {level : level, levels: levels});
         });
         

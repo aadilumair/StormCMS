@@ -7,6 +7,11 @@ var LevelSchema = new Schema({
         required: true
     },
     
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    
     dateCreated: {
         type: Date,
         default: Date.now()
