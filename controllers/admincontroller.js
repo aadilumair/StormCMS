@@ -282,9 +282,20 @@ editSubjectUpdateRoute: (req, res) => {
 
 deleteSubjects: (req, res) => {
         
-    Subject.findByIdAndDelete(req.params.id).then(deletedSubject => {
-        req.flash('success-message', `Subject ${deletedSubject.title} has been successfully deleted.`);
-        res.redirect('/admin/subjects')
+    Chapter.find({subject: req.params.id}).then(LinkedChapts => {
+        if(!(LinkedChapts.length))
+        {
+            Subject.findByIdAndDelete(req.params.id).then(deletedSubject => {
+                req.flash('success-message', `Subject ${deletedSubject.title} has been successfully deleted.`);
+                res.redirect('/admin/subjects')
+            });
+        }
+        else{
+            Subject.findById(req.params.id).then(unDeletedSubject => {
+                req.flash('error-message', `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`);
+                res.redirect('/admin/subjects')
+            });
+        }
     });
 },
 
