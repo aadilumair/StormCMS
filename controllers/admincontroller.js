@@ -295,7 +295,7 @@ deleteSubjects: (req, res) => {
                 req.flash('error-message', `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`);
                 res.redirect('/admin/subjects')
             });
-        }
+        } 
     });
 },
 
