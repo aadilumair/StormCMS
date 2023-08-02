@@ -362,10 +362,21 @@ editChapterSubmit: (req, res) => {
 },
 
 deleteChapters: (req, res) => {
-        
-    Chapter.findByIdAndDelete(req.params.id).then(deletedChapter => {
-        req.flash('success-message', `Chapter ${deletedChapter.title} has been successfully deleted.`);
-        res.redirect('/admin/chapters')
+    
+    Post.find({chapter: req.params.id}).then(LinkedPosts => {
+        if(!(LinkedPosts.length))
+        {
+            Chapter.findByIdAndDelete(req.params.id).then(deletedChapter => {
+                req.flash('success-message', `Chapter ${deletedChapter.title} has been successfully deleted.`);
+                res.redirect('/admin/chapters')
+            });
+        }
+        else{
+            Chapter.findById(req.params.id).then(unDeletedChapter => {
+                req.flash('error-message', `Chapter ${unDeletedChapter.title} is linked to posts and cannot be deleted.`);
+                res.redirect('/admin/chapters')
+            });
+        } 
     });
 },
 
