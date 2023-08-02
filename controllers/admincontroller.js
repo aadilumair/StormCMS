@@ -197,12 +197,26 @@ editLevelSubmit: (req, res) => {
 },
 
 deleteLevels: (req, res) => {
-        
-    Level.findByIdAndDelete(req.params.id).then(deletedLevel => {
-        req.flash('success-message', `Level ${deletedLevel.title} has been successfully deleted.`);
-        res.redirect('/admin/levels')
+    
+    Subject.find({level: req.params.id}).then(LinkedSubs => {
+        if(!(LinkedSubs.length))
+        {
+            Level.findByIdAndDelete(req.params.id).then(deletedLevel => {
+                req.flash('success-message', `Level ${deletedLevel.title} has been successfully deleted.`);
+                res.redirect('/admin/levels');
+            });
+        }
+        else{
+            Level.findById(req.params.id).then(unDeletedLevel => {
+                req.flash('error-message', `Level ${unDeletedLevel.title} is linked to subjects and cannot be deleted.`);
+            res.redirect('/admin/levels');
+            });
+        }
     });
+
+    
 },
+
 
 
 //subjects
