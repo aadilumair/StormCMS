@@ -43,6 +43,18 @@ router.route('/categories/edit/:id')
 .get(adminController.editCategory)
 .post(adminController.editCategorySubmit);
 
+//Blog Posts routes
+
+router.route('/blogPosts')
+    .get(adminController.getBlogPosts)
+    .post(adminController.submitBlogPosts);
+
+router.route('/blogPosts/create')
+    .get(adminController.createBlogPosts);
+
+
+
+
 //Levels routes
 router.route('/levels')
     .get(adminController.getLevels)

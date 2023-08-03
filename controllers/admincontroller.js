@@ -5,6 +5,7 @@ var Subject = require('../models/SubjectModel');
 var Chapter = require('../models/ChapterModel');
 var File = require('../models/FileModel');
 var User = require('../models/UserModel');
+var BlogPost = require('../models/BlogPostModel');
 
 var bcrypt = require('bcryptjs');
 var fs = require('fs');
@@ -139,6 +140,35 @@ editCategorySubmit: (req, res) => {
     }
     
 
+},
+
+//Posts control
+getBlogPosts: (req, res) => {
+    BlogPost.find().populate('user').populate('category').then(BlogPosts => {
+        res.render('admin/blogPosts/index', {blogPosts: BlogPosts});
+    });
+},
+
+createBlogPosts: (req, res) => {
+    Category.find().then(cats => {
+        res.render('admin/blogPosts/create', {Categories: cats});
+    });
+},
+
+submitBlogPosts: (req, res) => {
+    //TODO ADD VALIDATION
+    const newBlogPost = BlogPost({
+        title: req.body.title,
+        description: req.body.description,
+        status: req.body.status,
+        category: req.body.category,
+        user:req.user.id,    
+    });
+
+    newBlogPost.save().then(blogPost => {
+        req.flash('success-message', "Post created successfully");
+        res.redirect('/admin/blogPosts');
+    });
 },
 
 //Level Control
