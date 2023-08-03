@@ -1,36 +1,53 @@
 <div class="container">
 
 
-    <h3 class="text-center">All Categories </h3>
-
-
-    <div class="row">
-        <div class="col-6 mx-auto">
-            <table class="bg-dark table table-bordered">
-                <thead>
-                <tr class="text-white">
+   <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> All Categoriess</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
                     <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
                     <th>Action</th>
                 </tr>
-                </thead>
-                <tbody class="bg-white text-center text-black">
+              </thead>
+              <tfoot>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Date Uploaded</th>
+                    <th>Action</th>
+                </tr>
+              </tfoot>
+              <tbody>
                 {{#each categories}}
                     <tr>
 
                         <td>{{title}}</td>
+                        <td>{{user.firstName}} {{user.lastName}}</td>
+                        <td>{{dateCreated}}</td>
                         <td class="d-flex justify-content-center">
-                            <a href="/admin/category/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
-                            <form action="/admin/category/{{_id}}?newMethod=DELETE" method="post">
+                            <a href="/admin/categories/edit/{{_id}}" class="btn btn-sm btn-warning mr-2" role="button">Edit</a>
+                            <form action="/admin/categories/delete/{{_id}}?newMethod=DELETE" method="post">
                                 <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
                 {{/each}}
                 </tbody>
-
+              
             </table>
+          </div>
         </div>
-    </div>
+        
+      </div>
+
+    
+
 
     <hr>
 

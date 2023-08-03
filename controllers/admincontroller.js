@@ -102,11 +102,11 @@ createCategories: (req, res) => {
     if (req.body.name){
         var newCat = new Category({
             title: req.body.name,
-            user: req.user._id
+            user: req.user.id
         });
 
-        newCat.save().then(category =>{
-            res.status(200).json(category);
+        newCat.save().then(category2 =>{
+            res.status(200).json({url: '/admin/categories'});
         });
     }
 },
@@ -132,10 +132,7 @@ editCategorySubmit: (req, res) => {
             .then(cat => {
 
                 cat.title = req.body.name;
-                
-
-
-                cat.save().then(category =>{
+                cat.save().then(category1 =>{
                     res.status(200).json({url: '/admin/categories'});
                 });
             });
