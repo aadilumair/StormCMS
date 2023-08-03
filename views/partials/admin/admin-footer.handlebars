@@ -80,16 +80,7 @@
                 type: 'POST',
                 data: {name: data},
                 success: function (response) {
-                    var html = `<tr>
-                        <td>${response.title}</td>
-                        <td class="d-flex justify-content-center">
-                            <a href="/admin/levels/edit/${response._id}" class="btn btn-sm btn-warning mr-2">Edit</a>
-                            <form action="/admin/levels/${response._id}?newMethod=DELETE" method="post">
-                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>`;
-                    $(".level-list").append(html);
+                    window.location.href = response.url;
                 }
             });
             $("#level-title").val('');

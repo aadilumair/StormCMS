@@ -156,7 +156,7 @@ createLevels: (req, res) => {
         });
 
         newLevel.save().then(level =>{
-            res.status(200).json(level);
+            res.status(200).json({url: '/admin/levels'});
         });
     }
 },
