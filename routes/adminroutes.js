@@ -39,7 +39,7 @@ router.route('/categories')
     .get(adminController.getCategories)
     .post(adminController.createCategories);
 
-router.route('/category/edit/:id')
+router.route('/categories/edit/:id')
 .get(adminController.editCategory)
 .post(adminController.editCategorySubmit);
 

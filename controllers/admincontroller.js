@@ -93,7 +93,7 @@ module.exports = {
 
 //Categories control
 getCategories: (req, res) => {
-    Category.find().then(cats => {
+    Category.find().populate('user').then(cats => {
         res.render('admin/categories/index', {categories: cats});
     });
 },
@@ -101,7 +101,8 @@ getCategories: (req, res) => {
 createCategories: (req, res) => {
     if (req.body.name){
         var newCat = new Category({
-            title: req.body.name
+            title: req.body.name,
+            user: req.user._id
         });
 
         newCat.save().then(category =>{
