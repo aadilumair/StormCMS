@@ -56,6 +56,8 @@ router.route('/blogPosts/edit/:id')
     .get(adminController.editBlogPosts)
     .put(adminController.editBlogPostUpdateRoute);
 
+router.route('/blogPosts/delete/:id')
+    .delete(adminController.deleteBlogPosts);
 
 //Levels routes
 router.route('/levels')

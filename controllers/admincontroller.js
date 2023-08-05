@@ -201,7 +201,13 @@ editBlogPostUpdateRoute: (req, res) => {
 
 },
 
-
+deleteBlogPosts: (req, res) => {
+        
+    BlogPost.findByIdAndDelete(req.params.id).then(deletedBlogPost => {
+        req.flash('success-message', `Blog Post ${deletedBlogPost.title} has been successfully deleted.`);
+        res.redirect('/admin/blogPosts')
+    });
+},
 
 //Level Control
 getLevels: (req, res) => {
