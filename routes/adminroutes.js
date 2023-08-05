@@ -43,6 +43,9 @@ router.route('/categories/edit/:id')
 .get(adminController.editCategory)
 .post(adminController.editCategorySubmit);
 
+router.route('/categories/delete/:id')
+.delete(adminController.deleteCategories);
+
 //Blog Posts routes
 
 router.route('/blogPosts')

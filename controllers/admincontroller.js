@@ -142,6 +142,25 @@ editCategorySubmit: (req, res) => {
 
 },
 
+deleteCategories: (req, res) => {
+
+    BlogPost.find({category: req.params.id}).then(LinkedCats => {
+        if(!(LinkedCats.length))
+        {
+            Category.findByIdAndDelete(req.params.id).then(deletedCategory => {
+                req.flash('success-message', `Category ${deletedCategory.title} has been successfully deleted.`);
+                res.redirect('/admin/categories');
+            });
+        }
+        else{
+            Category.findById(req.params.id).then(unDeletedCategory => {
+                req.flash('error-message', `Category ${unDeletedCategory.title} is linked to posts and cannot be deleted.`);
+            res.redirect('/admin/categories');
+            });
+        }
+    });
+},
+
 //Posts control
 getBlogPosts: (req, res) => {
     BlogPost.find().populate('user').populate('category').then(BlogPosts => {
