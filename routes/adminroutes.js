@@ -52,7 +52,9 @@ router.route('/blogPosts')
 router.route('/blogPosts/create')
     .get(adminController.createBlogPosts);
 
-
+router.route('/blogPosts/edit/:id')
+    .get(adminController.editBlogPosts)
+    .put(adminController.editBlogPostUpdateRoute);
 
 
 //Levels routes

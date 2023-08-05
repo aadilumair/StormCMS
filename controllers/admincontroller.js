@@ -171,6 +171,38 @@ submitBlogPosts: (req, res) => {
     });
 },
 
+editBlogPosts: (req, res) => {
+    var id = req.params.id;
+    BlogPost.findById(id).populate('category')
+    .then(blogPost => {
+        Category.find().then(cats => {
+            res.render('admin/blogPosts/edit', {blogPost: blogPost, Categories: cats});
+        })
+    })
+},
+
+editBlogPostUpdateRoute: (req, res) => {
+    const id = req.params.id;
+
+    BlogPost.findById(id)
+        .then(blogPost => {
+
+            blogPost.title = req.body.title;
+            blogPost.description = req.body.description;
+            blogPost.status = req.body.status;
+            blogPost.category = req.body.category;
+            
+            blogPost.save().then(updateBlogPost => {
+                req.flash('success-message', `The Blog Post ${updateBlogPost.title} has been updated.`);
+                res.redirect('/admin/blogPosts');
+
+            });
+        });
+
+},
+
+
+
 //Level Control
 getLevels: (req, res) => {
     Level.find().populate('user').then(Levels => {
