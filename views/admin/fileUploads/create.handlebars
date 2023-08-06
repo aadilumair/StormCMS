@@ -4,22 +4,22 @@
             <form action="/admin/fileuploads" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" id="title"></input>
+                    <input type="text" class="form-control" name="title" id="title" required></input>
                 </div>
                 <div class="form-group">
                     <label for="file">File Upload (File must be smaller than 3MB)</label>
-                    <input type="file" class="form-control" id="file" name="uploadedFile">
+                    <input type="file" class="form-control" id="file" name="uploadedFile" required>
                 </div>
                 <div class="form-group">
                     <label for="type">Type</label>
-                    <select name="type" id="type" class="form-control">
+                    <select name="type" id="type" class="form-control" required>
                         <option value="image">Image</option>
                         <option value="document">Document</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="tags">Tags (separate by comma)</label>
-                    <input type="text" class="form-control" name="tags" id="tags"></input>
+                    <input type="text" class="form-control" name="tags" id="tags" required></input>
                 </div>
                 
                 

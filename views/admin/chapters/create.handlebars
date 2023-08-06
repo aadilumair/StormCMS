@@ -5,17 +5,17 @@
             <form action="/admin/chapters" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" id="title"></input>
+                    <input type="text" class="form-control" name="title" id="title" required></input>
                 </div>
                 
                 <div class="form-group">
                     <label for="position">Position (This reflects the order in which chapter will be displayed)</label>
-                    <input type="number" class="form-control" name="position" id="position"></input>
+                    <input type="number" class="form-control" name="position" id="position" required></input>
                 </div>
 
                 <div class="form-group">
                     <label for="subject">Subject</label>
-                    <select name="subject" id="subject" class="form-control">
+                    <select name="subject" id="subject" class="form-control" required>
                         {{#each Subjects}}
                             <option value="{{_id}}">{{level.title}} {{title}}</option>
                         {{/each}}

@@ -5,15 +5,15 @@
             <form action="/admin/chapters/edit/{{chapter._id}}?newMethod=PUT" method="post">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" id="title" value="{{chapter.title}}"></input>
+                    <input type="text" class="form-control" name="title" id="title" value="{{chapter.title}}" required></input>
                 </div>
                 <div class="form-group">
                     <label for="position">Position (This reflects the order in which post will be displayed)</label>
-                    <input type="number" class="form-control" name="position" id="position" value="{{chapter.position}}"></input>
+                    <input type="number" class="form-control" name="position" id="position" value="{{chapter.position}}" required></input>
                 </div>
                 <div class="form-group">
                     <label for="subject">Subject</label>
-                    <select name="subject" id="subject" class="form-control">
+                    <select name="subject" id="subject" class="form-control" required>
                         {{#select chapter.subject}}
                             {{#each subjects}}
                                 <option value="{{_id}}">{{level.title}} {{title}}</option>
