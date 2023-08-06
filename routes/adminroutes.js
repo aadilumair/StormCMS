@@ -130,6 +130,9 @@ router.route('/users/edit/:id')
     .get(adminController.editUser)
     .post(adminController.editUserSubmit);
 
+router.route('/users/delete/:id')
+    .delete(adminController.deleteUsers);
+
 
 
 module.exports = router;
