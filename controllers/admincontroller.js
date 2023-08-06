@@ -666,19 +666,27 @@ registerPost: (req, res) => {
     deleteUsers: (req, res) => {
         Post.find({user: req.params.id}).then(LinkedPosts => {
              BlogPost.find({user: req.params.id}).then(LinkedBlogPosts => {
-                if(!((LinkedPosts.length)||(LinkedBlogPosts.length)))
-                {
-                    User.findByIdAndDelete(req.params.id).then(deletedUser => {
-                        req.flash('success-message', `User ${deletedUser.firstName} ${deletedUser.lastName} has been successfully deleted.`);
-                        res.redirect('/admin/users')
+                Category.find({user: req.params.id}).then(LinkedCategories => {
+                    Chapter.find({user: req.params.id}).then(LinkedChapters => {
+                        Subject.find({user: req.params.id}).then(LinkedSubjects => {
+                            Level.find({user: req.params.id}).then(LinkedLevels => {
+                                if(!((LinkedPosts.length)||(LinkedBlogPosts.length)||(LinkedCategories.length)||(LinkedChapters.length)||(LinkedSubjects.length)||(LinkedLevels.length)))
+                                {
+                                    User.findByIdAndDelete(req.params.id).then(deletedUser => {
+                                        req.flash('success-message', `User ${deletedUser.firstName} ${deletedUser.lastName} has been successfully deleted.`);
+                                        res.redirect('/admin/users')
+                                    });
+                                }
+                                else{
+                                User.findById(req.params.id).then(unDeletedUser => {
+                                    req.flash('error-message', `User ${unDeletedUser.firstName} ${unDeletedUser.lastName} is linked to elements and cannot be deleted. Consider changing their password to lock access.`);
+                                    res.redirect('/admin/users')
+                                    });
+                                }
+                            });
+                        });
                     });
-                }
-                else{
-                    User.findById(req.params.id).then(unDeletedUser => {
-                        req.flash('error-message', `User ${unDeletedUser.firstName} ${unDeletedUser.lastName} is linked to posts or blog posts and cannot be deleted. Consider changing their password to lock access.`);
-                        res.redirect('/admin/users')
-                    });
-                }
+                });
              });
         });
     },
