@@ -11,6 +11,7 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
+                    <th>Role</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Date Created</th>
@@ -19,6 +20,7 @@
               </thead>
               <tfoot>
                 <tr>
+                    <th>Role</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Date Created</th>
@@ -29,6 +31,7 @@
             {{#each users}}
                     <tr>
 
+                       <td>{{role}}</td>
                        <td>{{firstName}} {{lastName}}</td> 
                         <td>{{email}}</td>
                         <td>{{dateCreated}}</td>

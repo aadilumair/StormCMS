@@ -567,6 +567,7 @@ registerPost: (req, res) => {
                 errors: errors,
                 firstName: req.body.firstName,
                 lastName:req.body.lastName,
+                role: req.body.role,
                 email:req.body.email,
             })
         }
