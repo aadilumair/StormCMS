@@ -1,3 +1,5 @@
+const { listenerCount } = require('../models/CategoryModel');
+
 module.exports = {
     selectOption : function(status, options) {
         return options.fn(this).replace(new RegExp('value=\"'+status+'\"'), '$&selected="selected"');
@@ -20,5 +22,7 @@ module.exports = {
         else {
             res.redirect('/login');
         }
-    }
+    },
+
+    
 };

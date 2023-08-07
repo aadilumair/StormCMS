@@ -94,72 +94,115 @@ module.exports = {
 
 //Categories control
 getCategories: (req, res) => {
-    Category.find().populate('user').then(cats => {
-        res.render('admin/categories/index', {categories: cats});
-    });
+    if((req.user.role=="administrator")||(req.user.role=="editor"))
+    {
+        Category.find().populate('user').then(cats => {
+            res.render('admin/categories/index', {categories: cats});
+        });
+    }
+    else
+    {
+        req.flash('error-message', `You do not have access to this part of the site.`);
+        res.redirect('/admin');
+    }
+    
+    
 },
 
 createCategories: (req, res) => {
-    if (req.body.name){
-        var newCat = new Category({
-            title: req.body.name,
-            user: req.user.id
-        });
-
-        newCat.save().then(category2 =>{
-            res.status(200).json({url: '/admin/categories'});
-        });
+    if((req.user.role=="administrator")||(req.user.role=="editor"))
+    {
+        if (req.body.name){
+            var newCat = new Category({
+                title: req.body.name,
+                user: req.user.id
+            });
+    
+            newCat.save().then(category2 =>{
+                res.status(200).json({url: '/admin/categories'});
+            });
+        }
     }
+    else
+    {
+        req.flash('error-message', `You do not have access to this part of the site.`);
+        res.redirect('/admin');
+    }
+    
 },
 
 editCategory: (req, res) => {
-    var id = req.params.id;
+    if((req.user.role=="administrator")||(req.user.role=="editor"))
+    {
+        var id = req.params.id;
     
-    Category.find().then(cats => {
-        Category.findById(id).then(cat => {
-            res.render('admin/categories/edit', {category : cat, categories: cats});
-        });
+        Category.find().then(cats => {
+            Category.findById(id).then(cat => {
+                res.render('admin/categories/edit', {category : cat, categories: cats});
+            });
         
-    });
+        });
+    }
+    else
+    {
+        req.flash('error-message', `You do not have access to this part of the site.`);
+        res.redirect('/admin');
+    }
+    
 },
 
 editCategorySubmit: (req, res) => {
-    var id = req.params.id;
+    if((req.user.role=="administrator")||(req.user.role=="editor"))
+    {
+        var id = req.params.id;
 
-    if (req.body.name){
+        if (req.body.name){
         
 
-        Category.findById(id)
-            .then(cat => {
+            Category.findById(id)
+                .then(cat => {
 
-                cat.title = req.body.name;
-                cat.save().then(category1 =>{
-                    res.status(200).json({url: '/admin/categories'});
+                    cat.title = req.body.name;
+                    cat.save().then(category1 =>{
+                        res.status(200).json({url: '/admin/categories'});
+                    });
                 });
-            });
+        }
     }
-    
-
+    else
+    {
+        req.flash('error-message', `You do not have access to this part of the site.`);
+        res.redirect('/admin');
+    }
 },
 
 deleteCategories: (req, res) => {
 
-    BlogPost.find({category: req.params.id}).then(LinkedCats => {
-        if(!(LinkedCats.length))
-        {
-            Category.findByIdAndDelete(req.params.id).then(deletedCategory => {
-                req.flash('success-message', `Category ${deletedCategory.title} has been successfully deleted.`);
+    if((req.user.role=="administrator")||(req.user.role=="editor"))
+    {
+        BlogPost.find({category: req.params.id}).then(LinkedCats => {
+            if(!(LinkedCats.length))
+            {
+                Category.findByIdAndDelete(req.params.id).then(deletedCategory => {
+                    req.flash('success-message', `Category ${deletedCategory.title} has been successfully deleted.`);
+                    res.redirect('/admin/categories');
+                });
+            }
+            else{
+                Category.findById(req.params.id).then(unDeletedCategory => {
+                    req.flash('error-message', `Category ${unDeletedCategory.title} is linked to posts and cannot be deleted.`);
                 res.redirect('/admin/categories');
-            });
-        }
-        else{
-            Category.findById(req.params.id).then(unDeletedCategory => {
-                req.flash('error-message', `Category ${unDeletedCategory.title} is linked to posts and cannot be deleted.`);
-            res.redirect('/admin/categories');
-            });
-        }
-    });
+                });
+            }
+        });
+    }
+    else
+    {
+        req.flash('error-message', `You do not have access to this part of the site.`);
+        res.redirect('/admin');
+    }
 },
+
 
 //Posts control
 getBlogPosts: (req, res) => {

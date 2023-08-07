@@ -45,7 +45,7 @@ passport.use(new LocalStrategy({
 
 passport.serializeUser(function(user, done) {
         process.nextTick(function() {
-        done(null, { id: user.id, username: user.email });
+        done(null, { id: user.id, username: user.email, role:user.role });
       });
 });
 
