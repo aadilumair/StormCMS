@@ -408,47 +408,83 @@ module.exports = {
   },
 
   //subjects
-  getSubjects: (req, res) => {
-    Subject.find()
+  getSubjects: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Subject.find()
       .populate("level")
       .populate("user")
       .then((Subjects) => {
         res.render("admin/subjects/index", { subjects: Subjects });
       });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
-  createSubjects: (req, res) => {
-    Level.find().then((levs) => {
-      res.render("admin/subjects/create", { Levels: levs });
-    });
+  createSubjects: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Level.find().then((levs) => {
+            res.render("admin/subjects/create", { Levels: levs });
+          });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  submitSubjects: (req, res) => {
+  submitSubjects: async (req, res) => {
     //TODO ADD VALIDATION
-    const newSubject = Subject({
-      title: req.body.title,
-      level: req.body.level,
-      user: req.user.id,
-    });
-
-    newSubject.save().then((subject) => {
-      console.log(subject); //Remove this in PRODUCTION
-      req.flash("success-message", "Subject created successfully");
-      res.redirect("/admin/subjects");
-    });
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        const newSubject = Subject({
+            title: req.body.title,
+            level: req.body.level,
+            user: req.user.id,
+          });
+      
+          newSubject.save().then((subject) => {
+            console.log(subject); //Remove this in PRODUCTION
+            req.flash("success-message", "Subject created successfully");
+            res.redirect("/admin/subjects");
+          });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editSubject: (req, res) => {
-    var id = req.params.id;
+  editSubject: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        var id = req.params.id;
     Subject.findById(id).then((subject) => {
       Level.find().then((levs) => {
         res.render("admin/subjects/edit", { subject: subject, levels: levs });
       });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editSubjectUpdateRoute: (req, res) => {
-    const id = req.params.id;
+  editSubjectUpdateRoute: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        const id = req.params.id;
 
     Subject.findById(id).then((subject) => {
       subject.title = req.body.title;
@@ -462,28 +498,45 @@ module.exports = {
         res.redirect("/admin/subjects");
       });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  deleteSubjects: (req, res) => {
-    Chapter.find({ subject: req.params.id }).then((LinkedChapts) => {
-      if (!LinkedChapts.length) {
-        Subject.findByIdAndDelete(req.params.id).then((deletedSubject) => {
-          req.flash(
-            "success-message",
-            `Subject ${deletedSubject.title} has been successfully deleted.`
-          );
-          res.redirect("/admin/subjects");
-        });
-      } else {
-        Subject.findById(req.params.id).then((unDeletedSubject) => {
-          req.flash(
-            "error-message",
-            `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`
-          );
-          res.redirect("/admin/subjects");
-        });
-      }
-    });
+  deleteSubjects: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Chapter.find({ subject: req.params.id }).then((LinkedChapts) => {
+            if (!LinkedChapts.length) {
+              Subject.findByIdAndDelete(req.params.id).then((deletedSubject) => {
+                req.flash(
+                  "success-message",
+                  `Subject ${deletedSubject.title} has been successfully deleted.`
+                );
+                res.redirect("/admin/subjects");
+              });
+            } else {
+              Subject.findById(req.params.id).then((unDeletedSubject) => {
+                req.flash(
+                  "error-message",
+                  `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`
+                );
+                res.redirect("/admin/subjects");
+              });
+            }
+          });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
   //chapters mechanism
