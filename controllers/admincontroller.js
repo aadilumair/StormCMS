@@ -540,41 +540,69 @@ module.exports = {
   },
 
   //chapters mechanism
-  getChapters: (req, res) => {
-    Chapter.find()
+  getChapters: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Chapter.find()
       .populate({ path: "subject", populate: { path: "level" } })
       .populate("user")
       .then((Chapters) => {
         res.render("admin/chapters/index", { chapters: Chapters });
       });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  createChapters: (req, res) => {
-    Subject.find()
+  createChapters: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Subject.find()
       .populate("level")
       .then((subs) => {
         res.render("admin/chapters/create", { Subjects: subs });
       });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  submitChapters: (req, res) => {
-    //TODO ADD VALIDATION
+  submitChapters: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        //TODO ADD VALIDATION
     const newChapter = Chapter({
-      title: req.body.title,
-      subject: req.body.subject,
-      position: req.body.position,
-      user: req.user.id,
-    });
-
-    newChapter.save().then((chapter) => {
-      console.log(chapter); //Remove this in PRODUCTION
-      req.flash("success-message", "Chapter created successfully");
-      res.redirect("/admin/chapters");
-    });
+        title: req.body.title,
+        subject: req.body.subject,
+        position: req.body.position,
+        user: req.user.id,
+      });
+  
+      newChapter.save().then((chapter) => {
+        console.log(chapter); //Remove this in PRODUCTION
+        req.flash("success-message", "Chapter created successfully");
+        res.redirect("/admin/chapters");
+      });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editChapter: (req, res) => {
-    var id = req.params.id;
+  editChapter: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        var id = req.params.id;
     Chapter.findById(id).then((chapter) => {
       Subject.find()
         .populate("level")
@@ -585,10 +613,19 @@ module.exports = {
           });
         });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editChapterSubmit: (req, res) => {
-    const id = req.params.id;
+  editChapterSubmit: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        const id = req.params.id;
 
     Chapter.findById(id).then((chapter) => {
       chapter.title = req.body.title;
@@ -603,28 +640,45 @@ module.exports = {
         res.redirect("/admin/chapters");
       });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  deleteChapters: (req, res) => {
-    Post.find({ chapter: req.params.id }).then((LinkedPosts) => {
-      if (!LinkedPosts.length) {
-        Chapter.findByIdAndDelete(req.params.id).then((deletedChapter) => {
-          req.flash(
-            "success-message",
-            `Chapter ${deletedChapter.title} has been successfully deleted.`
-          );
-          res.redirect("/admin/chapters");
-        });
-      } else {
-        Chapter.findById(req.params.id).then((unDeletedChapter) => {
-          req.flash(
-            "error-message",
-            `Chapter ${unDeletedChapter.title} is linked to posts and cannot be deleted.`
-          );
-          res.redirect("/admin/chapters");
-        });
-      }
-    });
+  deleteChapters: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        Post.find({ chapter: req.params.id }).then((LinkedPosts) => {
+            if (!LinkedPosts.length) {
+              Chapter.findByIdAndDelete(req.params.id).then((deletedChapter) => {
+                req.flash(
+                  "success-message",
+                  `Chapter ${deletedChapter.title} has been successfully deleted.`
+                );
+                res.redirect("/admin/chapters");
+              });
+            } else {
+              Chapter.findById(req.params.id).then((unDeletedChapter) => {
+                req.flash(
+                  "error-message",
+                  `Chapter ${unDeletedChapter.title} is linked to posts and cannot be deleted.`
+                );
+                res.redirect("/admin/chapters");
+              });
+            }
+          });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
   //file uploads
