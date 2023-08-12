@@ -1,4 +1,5 @@
 const { listenerCount } = require('../models/CategoryModel');
+var User = require('../models/UserModel');
 
 module.exports = {
     selectOption : function(status, options) {
@@ -22,6 +23,18 @@ module.exports = {
         else {
             res.redirect('/login');
         }
+    },
+
+    isUserAdmin: async function (id) {
+        var fuser = await User.findOne({ _id: id });
+        if (fuser.role == "administrator") return true;
+        else return false;
+    },
+
+    isUserEditor: async function (id) {
+        var fuser = await User.findOne({ _id: id });
+        if (fuser.role == "editor") return true;
+        else return false;
     },
 
     
