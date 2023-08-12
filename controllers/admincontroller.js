@@ -280,8 +280,8 @@ module.exports = {
     });
   },
 
-  deleteBlogPosts: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  deleteBlogPosts: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       BlogPost.findByIdAndDelete(req.params.id).then((deletedBlogPost) => {
         req.flash(
           "success-message",
@@ -299,8 +299,8 @@ module.exports = {
   },
 
   //Level Control
-  getLevels: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  getLevels: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       Level.find()
         .populate("user")
         .then((Levels) => {
@@ -315,8 +315,8 @@ module.exports = {
     }
   },
 
-  createLevels: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  createLevels: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       if (req.body.name) {
         var newLevel = new Level({
           title: req.body.name,
@@ -336,8 +336,8 @@ module.exports = {
     }
   },
 
-  editLevel: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  editLevel: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       var id = req.params.id;
 
       Level.find().then((levels) => {
@@ -356,8 +356,8 @@ module.exports = {
     }
   },
 
-  editLevelSubmit: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  editLevelSubmit: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       var id = req.params.id;
 
       if (req.body.name) {
@@ -377,8 +377,8 @@ module.exports = {
     }
   },
 
-  deleteLevels: (req, res) => {
-    if (req.user.role == "administrator" || req.user.role == "editor") {
+  deleteLevels: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
       Subject.find({ level: req.params.id }).then((LinkedSubs) => {
         if (!LinkedSubs.length) {
           Level.findByIdAndDelete(req.params.id).then((deletedLevel) => {
