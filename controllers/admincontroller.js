@@ -720,25 +720,25 @@ module.exports = {
   },
 
   deleteFiles: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        File.findByIdAndDelete(req.params.id).then((deletedFile) => {
-            let path = "./public" + deletedFile.filepath;
-      
-            fs.unlink(path, (err) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-      
-              //file removed
-            });
-      
-            req.flash(
-              "success-message",
-              `File ${deletedFile.title} has been successfully deleted.`
-            );
-            res.redirect("/admin/fileUploads");
-          });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      File.findByIdAndDelete(req.params.id).then((deletedFile) => {
+        let path = "./public" + deletedFile.filepath;
+
+        fs.unlink(path, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          //file removed
+        });
+
+        req.flash(
+          "success-message",
+          `File ${deletedFile.title} has been successfully deleted.`
+        );
+        res.redirect("/admin/fileUploads");
+      });
     } else {
       req.flash(
         "error-message",
@@ -746,15 +746,14 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
   //users
 
   getUsers: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        User.find().then((Users) => {
-            res.render("admin/users/index", { users: Users });
-          });
+      User.find().then((Users) => {
+        res.render("admin/users/index", { users: Users });
+      });
     } else {
       req.flash(
         "error-message",
@@ -762,12 +761,11 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   registerGet: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        res.render("admin/users/create");
+      res.render("admin/users/create");
     } else {
       req.flash(
         "error-message",
@@ -779,51 +777,51 @@ module.exports = {
 
   registerPost: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        let errors = [];
-    if (!req.body.firstName) {
-      errors.push({ message: "First Name is mandatory" });
-    }
-    if (!req.body.lastName) {
-      errors.push({ message: "Last Name is mandatory" });
-    }
-    if (!req.body.email) {
-      errors.push({ message: "Email is mandatory" });
-    }
-    if (req.body.password != req.body.passwordConfirm) {
-      errors.push({ password: "Passwords do not match" });
-    }
+      let errors = [];
+      if (!req.body.firstName) {
+        errors.push({ message: "First Name is mandatory" });
+      }
+      if (!req.body.lastName) {
+        errors.push({ message: "Last Name is mandatory" });
+      }
+      if (!req.body.email) {
+        errors.push({ message: "Email is mandatory" });
+      }
+      if (req.body.password != req.body.passwordConfirm) {
+        errors.push({ password: "Passwords do not match" });
+      }
 
-    if (errors.length > 0) {
-      res.render("/admin/users/create", {
-        errors: errors,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        role: req.body.role,
-        email: req.body.email,
-      });
-    } else {
-      User.findOne({ email: req.body.email }).then((user) => {
-        if (user) {
-          req.flash(
-            "error-message",
-            "Email in use, please try a different one"
-          );
-          res.redirect("/admin/users/create");
-        } else {
-          var newUser = new User(req.body);
+      if (errors.length > 0) {
+        res.render("/admin/users/create", {
+          errors: errors,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          role: req.body.role,
+          email: req.body.email,
+        });
+      } else {
+        User.findOne({ email: req.body.email }).then((user) => {
+          if (user) {
+            req.flash(
+              "error-message",
+              "Email in use, please try a different one"
+            );
+            res.redirect("/admin/users/create");
+          } else {
+            var newUser = new User(req.body);
 
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              newUser.password = hash;
-              newUser.save().then((user) => {
-                req.flash("success-message", "Registeration successful");
-                res.redirect("/admin/users");
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                newUser.password = hash;
+                newUser.save().then((user) => {
+                  req.flash("success-message", "Registeration successful");
+                  res.redirect("/admin/users");
+                });
               });
             });
-          });
-        }
-      });
-    }
+          }
+        });
+      }
     } else {
       req.flash(
         "error-message",
@@ -831,15 +829,14 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editUser: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        var id = req.params.id;
-    User.findById(id).then((user) => {
-      res.render("admin/users/edit", { User: user });
-    });
+      var id = req.params.id;
+      User.findById(id).then((user) => {
+        res.render("admin/users/edit", { User: user });
+      });
     } else {
       req.flash(
         "error-message",
@@ -847,57 +844,56 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editUserSubmit: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        const id = req.params.id;
-    let errors = [];
-    if (!req.body.firstName) {
-      errors.push({ message: "First Name is mandatory" });
-    }
-    if (!req.body.lastName) {
-      errors.push({ message: "Last Name is mandatory" });
-    }
+      const id = req.params.id;
+      let errors = [];
+      if (!req.body.firstName) {
+        errors.push({ message: "First Name is mandatory" });
+      }
+      if (!req.body.lastName) {
+        errors.push({ message: "Last Name is mandatory" });
+      }
 
-    if (req.body.password && req.body.password != req.body.passwordConfirm) {
-      errors.push({ password: "Passwords do not match" });
-    }
+      if (req.body.password && req.body.password != req.body.passwordConfirm) {
+        errors.push({ password: "Passwords do not match" });
+      }
 
-    if (errors.length > 0) {
-      User.findById(id).then((user) => {
-        res.render("admin/users/edit", { User: user, errors: errors });
-      });
-    } else {
-      User.findById(id).then((user) => {
-        user.firstName = req.body.firstName;
-        user.lastName = req.body.lastName;
+      if (errors.length > 0) {
+        User.findById(id).then((user) => {
+          res.render("admin/users/edit", { User: user, errors: errors });
+        });
+      } else {
+        User.findById(id).then((user) => {
+          user.firstName = req.body.firstName;
+          user.lastName = req.body.lastName;
 
-        if (req.body.password) {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(req.body.password, salt, (err, hash) => {
-              user.password = hash;
-              user.save().then((updateUser) => {
-                req.flash(
-                  "success-message",
-                  `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`
-                );
-                res.redirect("/admin/users");
+          if (req.body.password) {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                user.password = hash;
+                user.save().then((updateUser) => {
+                  req.flash(
+                    "success-message",
+                    `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`
+                  );
+                  res.redirect("/admin/users");
+                });
               });
             });
-          });
-        } else {
-          user.save().then((updateUser) => {
-            req.flash(
-              "success-message",
-              `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`
-            );
-            res.redirect("/admin/users");
-          });
-        }
-      });
-    }
+          } else {
+            user.save().then((updateUser) => {
+              req.flash(
+                "success-message",
+                `The User ${updateUser.firstName} ${updateUser.lastName} has been updated.`
+              );
+              res.redirect("/admin/users");
+            });
+          }
+        });
+      }
     } else {
       req.flash(
         "error-message",
@@ -905,49 +901,50 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   deleteUsers: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-        Post.find({ user: req.params.id }).then((LinkedPosts) => {
-      BlogPost.find({ user: req.params.id }).then((LinkedBlogPosts) => {
-        Category.find({ user: req.params.id }).then((LinkedCategories) => {
-          Chapter.find({ user: req.params.id }).then((LinkedChapters) => {
-            Subject.find({ user: req.params.id }).then((LinkedSubjects) => {
-              Level.find({ user: req.params.id }).then((LinkedLevels) => {
-                if (
-                  !(
-                    LinkedPosts.length ||
-                    LinkedBlogPosts.length ||
-                    LinkedCategories.length ||
-                    LinkedChapters.length ||
-                    LinkedSubjects.length ||
-                    LinkedLevels.length
-                  )
-                ) {
-                  User.findByIdAndDelete(req.params.id).then((deletedUser) => {
-                    req.flash(
-                      "success-message",
-                      `User ${deletedUser.firstName} ${deletedUser.lastName} has been successfully deleted.`
+      Post.find({ user: req.params.id }).then((LinkedPosts) => {
+        BlogPost.find({ user: req.params.id }).then((LinkedBlogPosts) => {
+          Category.find({ user: req.params.id }).then((LinkedCategories) => {
+            Chapter.find({ user: req.params.id }).then((LinkedChapters) => {
+              Subject.find({ user: req.params.id }).then((LinkedSubjects) => {
+                Level.find({ user: req.params.id }).then((LinkedLevels) => {
+                  if (
+                    !(
+                      LinkedPosts.length ||
+                      LinkedBlogPosts.length ||
+                      LinkedCategories.length ||
+                      LinkedChapters.length ||
+                      LinkedSubjects.length ||
+                      LinkedLevels.length
+                    )
+                  ) {
+                    User.findByIdAndDelete(req.params.id).then(
+                      (deletedUser) => {
+                        req.flash(
+                          "success-message",
+                          `User ${deletedUser.firstName} ${deletedUser.lastName} has been successfully deleted.`
+                        );
+                        res.redirect("/admin/users");
+                      }
                     );
-                    res.redirect("/admin/users");
-                  });
-                } else {
-                  User.findById(req.params.id).then((unDeletedUser) => {
-                    req.flash(
-                      "error-message",
-                      `User ${unDeletedUser.firstName} ${unDeletedUser.lastName} is linked to elements and cannot be deleted. Consider changing their password to lock access.`
-                    );
-                    res.redirect("/admin/users");
-                  });
-                }
+                  } else {
+                    User.findById(req.params.id).then((unDeletedUser) => {
+                      req.flash(
+                        "error-message",
+                        `User ${unDeletedUser.firstName} ${unDeletedUser.lastName} is linked to elements and cannot be deleted. Consider changing their password to lock access.`
+                      );
+                      res.redirect("/admin/users");
+                    });
+                  }
+                });
               });
             });
           });
         });
       });
-    });
     } else {
       req.flash(
         "error-message",
@@ -955,6 +952,5 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 };
