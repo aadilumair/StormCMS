@@ -10,9 +10,11 @@ var BlogPost = require("../models/BlogPostModel");
 var bcrypt = require("bcryptjs");
 var fs = require("fs");
 
-var { isEmpty, isUserAdmin, isUserEditor } = require("../config/customFunctions");
-
-
+var {
+  isEmpty,
+  isUserAdmin,
+  isUserEditor,
+} = require("../config/customFunctions");
 
 module.exports = {
   index: (req, res) => {
@@ -107,7 +109,7 @@ module.exports = {
 
   //Categories control
   getCategories: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       Category.find()
         .populate("user")
         .then((cats) => {
@@ -123,7 +125,7 @@ module.exports = {
   },
 
   createCategories: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       if (req.body.name) {
         var newCat = new Category({
           title: req.body.name,
@@ -144,7 +146,7 @@ module.exports = {
   },
 
   editCategory: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       var id = req.params.id;
 
       Category.find().then((cats) => {
@@ -165,7 +167,7 @@ module.exports = {
   },
 
   editCategorySubmit: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       var id = req.params.id;
 
       if (req.body.name) {
@@ -186,7 +188,7 @@ module.exports = {
   },
 
   deleteCategories: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       BlogPost.find({ category: req.params.id }).then((LinkedCats) => {
         if (!LinkedCats.length) {
           Category.findByIdAndDelete(req.params.id).then((deletedCategory) => {
@@ -281,7 +283,7 @@ module.exports = {
   },
 
   deleteBlogPosts: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       BlogPost.findByIdAndDelete(req.params.id).then((deletedBlogPost) => {
         req.flash(
           "success-message",
@@ -300,7 +302,7 @@ module.exports = {
 
   //Level Control
   getLevels: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       Level.find()
         .populate("user")
         .then((Levels) => {
@@ -316,7 +318,7 @@ module.exports = {
   },
 
   createLevels: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       if (req.body.name) {
         var newLevel = new Level({
           title: req.body.name,
@@ -337,7 +339,7 @@ module.exports = {
   },
 
   editLevel: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       var id = req.params.id;
 
       Level.find().then((levels) => {
@@ -357,7 +359,7 @@ module.exports = {
   },
 
   editLevelSubmit: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       var id = req.params.id;
 
       if (req.body.name) {
@@ -378,7 +380,7 @@ module.exports = {
   },
 
   deleteLevels: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
       Subject.find({ level: req.params.id }).then((LinkedSubs) => {
         if (!LinkedSubs.length) {
           Level.findByIdAndDelete(req.params.id).then((deletedLevel) => {
@@ -409,13 +411,13 @@ module.exports = {
 
   //subjects
   getSubjects: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Subject.find()
-      .populate("level")
-      .populate("user")
-      .then((Subjects) => {
-        res.render("admin/subjects/index", { subjects: Subjects });
-      });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Subject.find()
+        .populate("level")
+        .populate("user")
+        .then((Subjects) => {
+          res.render("admin/subjects/index", { subjects: Subjects });
+        });
     } else {
       req.flash(
         "error-message",
@@ -426,10 +428,10 @@ module.exports = {
   },
 
   createSubjects: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Level.find().then((levs) => {
-            res.render("admin/subjects/create", { Levels: levs });
-          });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Level.find().then((levs) => {
+        res.render("admin/subjects/create", { Levels: levs });
+      });
     } else {
       req.flash(
         "error-message",
@@ -437,23 +439,22 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   submitSubjects: async (req, res) => {
     //TODO ADD VALIDATION
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        const newSubject = Subject({
-            title: req.body.title,
-            level: req.body.level,
-            user: req.user.id,
-          });
-      
-          newSubject.save().then((subject) => {
-            console.log(subject); //Remove this in PRODUCTION
-            req.flash("success-message", "Subject created successfully");
-            res.redirect("/admin/subjects");
-          });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      const newSubject = Subject({
+        title: req.body.title,
+        level: req.body.level,
+        user: req.user.id,
+      });
+
+      newSubject.save().then((subject) => {
+        console.log(subject); //Remove this in PRODUCTION
+        req.flash("success-message", "Subject created successfully");
+        res.redirect("/admin/subjects");
+      });
     } else {
       req.flash(
         "error-message",
@@ -461,17 +462,16 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editSubject: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        var id = req.params.id;
-    Subject.findById(id).then((subject) => {
-      Level.find().then((levs) => {
-        res.render("admin/subjects/edit", { subject: subject, levels: levs });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      var id = req.params.id;
+      Subject.findById(id).then((subject) => {
+        Level.find().then((levs) => {
+          res.render("admin/subjects/edit", { subject: subject, levels: levs });
+        });
       });
-    });
     } else {
       req.flash(
         "error-message",
@@ -479,25 +479,24 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editSubjectUpdateRoute: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        const id = req.params.id;
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      const id = req.params.id;
 
-    Subject.findById(id).then((subject) => {
-      subject.title = req.body.title;
-      subject.level = req.body.level;
+      Subject.findById(id).then((subject) => {
+        subject.title = req.body.title;
+        subject.level = req.body.level;
 
-      subject.save().then((updateSubject) => {
-        req.flash(
-          "success-message",
-          `The Subject ${updateSubject.title} has been updated.`
-        );
-        res.redirect("/admin/subjects");
+        subject.save().then((updateSubject) => {
+          req.flash(
+            "success-message",
+            `The Subject ${updateSubject.title} has been updated.`
+          );
+          res.redirect("/admin/subjects");
+        });
       });
-    });
     } else {
       req.flash(
         "error-message",
@@ -505,30 +504,29 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   deleteSubjects: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Chapter.find({ subject: req.params.id }).then((LinkedChapts) => {
-            if (!LinkedChapts.length) {
-              Subject.findByIdAndDelete(req.params.id).then((deletedSubject) => {
-                req.flash(
-                  "success-message",
-                  `Subject ${deletedSubject.title} has been successfully deleted.`
-                );
-                res.redirect("/admin/subjects");
-              });
-            } else {
-              Subject.findById(req.params.id).then((unDeletedSubject) => {
-                req.flash(
-                  "error-message",
-                  `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`
-                );
-                res.redirect("/admin/subjects");
-              });
-            }
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Chapter.find({ subject: req.params.id }).then((LinkedChapts) => {
+        if (!LinkedChapts.length) {
+          Subject.findByIdAndDelete(req.params.id).then((deletedSubject) => {
+            req.flash(
+              "success-message",
+              `Subject ${deletedSubject.title} has been successfully deleted.`
+            );
+            res.redirect("/admin/subjects");
           });
+        } else {
+          Subject.findById(req.params.id).then((unDeletedSubject) => {
+            req.flash(
+              "error-message",
+              `Subject ${unDeletedSubject.title} is linked to chapters and cannot be deleted.`
+            );
+            res.redirect("/admin/subjects");
+          });
+        }
+      });
     } else {
       req.flash(
         "error-message",
@@ -536,18 +534,17 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   //chapters mechanism
   getChapters: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Chapter.find()
-      .populate({ path: "subject", populate: { path: "level" } })
-      .populate("user")
-      .then((Chapters) => {
-        res.render("admin/chapters/index", { chapters: Chapters });
-      });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Chapter.find()
+        .populate({ path: "subject", populate: { path: "level" } })
+        .populate("user")
+        .then((Chapters) => {
+          res.render("admin/chapters/index", { chapters: Chapters });
+        });
     } else {
       req.flash(
         "error-message",
@@ -555,16 +552,15 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   createChapters: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Subject.find()
-      .populate("level")
-      .then((subs) => {
-        res.render("admin/chapters/create", { Subjects: subs });
-      });
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Subject.find()
+        .populate("level")
+        .then((subs) => {
+          res.render("admin/chapters/create", { Subjects: subs });
+        });
     } else {
       req.flash(
         "error-message",
@@ -572,19 +568,18 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   submitChapters: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        //TODO ADD VALIDATION
-    const newChapter = Chapter({
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      //TODO ADD VALIDATION
+      const newChapter = Chapter({
         title: req.body.title,
         subject: req.body.subject,
         position: req.body.position,
         user: req.user.id,
       });
-  
+
       newChapter.save().then((chapter) => {
         console.log(chapter); //Remove this in PRODUCTION
         req.flash("success-message", "Chapter created successfully");
@@ -597,22 +592,21 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editChapter: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        var id = req.params.id;
-    Chapter.findById(id).then((chapter) => {
-      Subject.find()
-        .populate("level")
-        .then((subs) => {
-          res.render("admin/chapters/edit", {
-            chapter: chapter,
-            subjects: subs,
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      var id = req.params.id;
+      Chapter.findById(id).then((chapter) => {
+        Subject.find()
+          .populate("level")
+          .then((subs) => {
+            res.render("admin/chapters/edit", {
+              chapter: chapter,
+              subjects: subs,
+            });
           });
-        });
-    });
+      });
     } else {
       req.flash(
         "error-message",
@@ -620,26 +614,25 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   editChapterSubmit: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        const id = req.params.id;
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      const id = req.params.id;
 
-    Chapter.findById(id).then((chapter) => {
-      chapter.title = req.body.title;
-      chapter.subject = req.body.subject;
-      chapter.position = req.body.position;
+      Chapter.findById(id).then((chapter) => {
+        chapter.title = req.body.title;
+        chapter.subject = req.body.subject;
+        chapter.position = req.body.position;
 
-      chapter.save().then((updateChapter) => {
-        req.flash(
-          "success-message",
-          `The Chapter ${updateChapter.title} has been updated.`
-        );
-        res.redirect("/admin/chapters");
+        chapter.save().then((updateChapter) => {
+          req.flash(
+            "success-message",
+            `The Chapter ${updateChapter.title} has been updated.`
+          );
+          res.redirect("/admin/chapters");
+        });
       });
-    });
     } else {
       req.flash(
         "error-message",
@@ -647,30 +640,29 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   deleteChapters: async (req, res) => {
-    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
-        Post.find({ chapter: req.params.id }).then((LinkedPosts) => {
-            if (!LinkedPosts.length) {
-              Chapter.findByIdAndDelete(req.params.id).then((deletedChapter) => {
-                req.flash(
-                  "success-message",
-                  `Chapter ${deletedChapter.title} has been successfully deleted.`
-                );
-                res.redirect("/admin/chapters");
-              });
-            } else {
-              Chapter.findById(req.params.id).then((unDeletedChapter) => {
-                req.flash(
-                  "error-message",
-                  `Chapter ${unDeletedChapter.title} is linked to posts and cannot be deleted.`
-                );
-                res.redirect("/admin/chapters");
-              });
-            }
+    if ((await isUserAdmin(req.user.id)) || (await isUserEditor(req.user.id))) {
+      Post.find({ chapter: req.params.id }).then((LinkedPosts) => {
+        if (!LinkedPosts.length) {
+          Chapter.findByIdAndDelete(req.params.id).then((deletedChapter) => {
+            req.flash(
+              "success-message",
+              `Chapter ${deletedChapter.title} has been successfully deleted.`
+            );
+            res.redirect("/admin/chapters");
           });
+        } else {
+          Chapter.findById(req.params.id).then((unDeletedChapter) => {
+            req.flash(
+              "error-message",
+              `Chapter ${unDeletedChapter.title} is linked to posts and cannot be deleted.`
+            );
+            res.redirect("/admin/chapters");
+          });
+        }
+      });
     } else {
       req.flash(
         "error-message",
@@ -678,7 +670,6 @@ module.exports = {
       );
       res.redirect("/admin");
     }
-    
   },
 
   //file uploads
@@ -728,40 +719,67 @@ module.exports = {
     });
   },
 
-  deleteFiles: (req, res) => {
-    File.findByIdAndDelete(req.params.id).then((deletedFile) => {
-      let path = "./public" + deletedFile.filepath;
-
-      fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-
-        //file removed
-      });
-
+  deleteFiles: async (req, res) => {
+    if (await isUserAdmin(req.user.id) || await isUserEditor(req.user.id)) {
+        File.findByIdAndDelete(req.params.id).then((deletedFile) => {
+            let path = "./public" + deletedFile.filepath;
+      
+            fs.unlink(path, (err) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+      
+              //file removed
+            });
+      
+            req.flash(
+              "success-message",
+              `File ${deletedFile.title} has been successfully deleted.`
+            );
+            res.redirect("/admin/fileUploads");
+          });
+    } else {
       req.flash(
-        "success-message",
-        `File ${deletedFile.title} has been successfully deleted.`
+        "error-message",
+        `You do not have access to this part of the site.`
       );
-      res.redirect("/admin/fileUploads");
-    });
+      res.redirect("/admin");
+    }
+    
   },
   //users
 
-  getUsers: (req, res) => {
-    User.find().then((Users) => {
-      res.render("admin/users/index", { users: Users });
-    });
+  getUsers: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        User.find().then((Users) => {
+            res.render("admin/users/index", { users: Users });
+          });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  registerGet: (req, res) => {
-    res.render("admin/users/create");
+  registerGet: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        res.render("admin/users/create");
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
-  registerPost: (req, res) => {
-    let errors = [];
+  registerPost: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        let errors = [];
     if (!req.body.firstName) {
       errors.push({ message: "First Name is mandatory" });
     }
@@ -806,17 +824,35 @@ module.exports = {
         }
       });
     }
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editUser: (req, res) => {
-    var id = req.params.id;
+  editUser: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        var id = req.params.id;
     User.findById(id).then((user) => {
       res.render("admin/users/edit", { User: user });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  editUserSubmit: (req, res) => {
-    const id = req.params.id;
+  editUserSubmit: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        const id = req.params.id;
     let errors = [];
     if (!req.body.firstName) {
       errors.push({ message: "First Name is mandatory" });
@@ -862,10 +898,19 @@ module.exports = {
         }
       });
     }
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 
-  deleteUsers: (req, res) => {
-    Post.find({ user: req.params.id }).then((LinkedPosts) => {
+  deleteUsers: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+        Post.find({ user: req.params.id }).then((LinkedPosts) => {
       BlogPost.find({ user: req.params.id }).then((LinkedBlogPosts) => {
         Category.find({ user: req.params.id }).then((LinkedCategories) => {
           Chapter.find({ user: req.params.id }).then((LinkedChapters) => {
@@ -903,5 +948,13 @@ module.exports = {
         });
       });
     });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+    
   },
 };
