@@ -14,6 +14,7 @@ var {
   isEmpty,
   isUserAdmin,
   isUserEditor,
+  isUserAuthor,
 } = require("../config/customFunctions");
 
 module.exports = {
@@ -60,41 +61,65 @@ module.exports = {
       });
   },
 
-  editPosts: (req, res) => {
-    var id = req.params.id;
-    Post.findById(id)
-      .populate({
-        path: "chapter",
-        populate: { path: "subject", populate: { path: "level" } },
-      })
-      .then((post) => {
-        Chapter.find()
-          .populate({ path: "subject", populate: { path: "level" } })
-          .then((chapts) => {
-            res.render("admin/posts/edit", { post: post, Chapters: chapts });
-          });
-      });
+  editPosts: async (req, res) => {
+    if (
+      (await isUserAuthor(req.params.id, req.user.id)) ||
+      (await isUserEditor(req.user.id)) ||
+      (await isUserAdmin(req.user.id))
+    ) {
+      var id = req.params.id;
+      Post.findById(id)
+        .populate({
+          path: "chapter",
+          populate: { path: "subject", populate: { path: "level" } },
+        })
+        .then((post) => {
+          Chapter.find()
+            .populate({ path: "subject", populate: { path: "level" } })
+            .then((chapts) => {
+              res.render("admin/posts/edit", { post: post, Chapters: chapts });
+            });
+        });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
-  editPostUpdateRoute: (req, res) => {
-    const id = req.params.id;
+  editPostUpdateRoute: async (req, res) => {
+    if (
+      (await isUserAuthor(req.params.id, req.user.id)) ||
+      (await isUserEditor(req.user.id)) ||
+      (await isUserAdmin(req.user.id))
+    ) {
+      const id = req.params.id;
 
-    Post.findById(id).then((post) => {
-      post.title = req.body.title;
-      post.description = req.body.description;
-      post.status = req.body.status;
-      post.chapter = req.body.chapter;
-      post.position = req.body.position;
-      post.user = req.user.id;
+      Post.findById(id).then((post) => {
+        post.title = req.body.title;
+        post.description = req.body.description;
+        post.status = req.body.status;
+        post.chapter = req.body.chapter;
+        post.position = req.body.position;
+        post.user = req.user.id;
 
-      post.save().then((updatePost) => {
-        req.flash(
-          "success-message",
-          `The Post ${updatePost.title} has been updated.`
-        );
-        res.redirect("/admin/posts");
+        post.save().then((updatePost) => {
+          req.flash(
+            "success-message",
+            `The Post ${updatePost.title} has been updated.`
+          );
+          res.redirect("/admin/posts");
+        });
       });
-    });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
   deletePosts: (req, res) => {
@@ -249,37 +274,61 @@ module.exports = {
     });
   },
 
-  editBlogPosts: (req, res) => {
-    var id = req.params.id;
-    BlogPost.findById(id)
-      .populate("category")
-      .then((blogPost) => {
-        Category.find().then((cats) => {
-          res.render("admin/blogPosts/edit", {
-            blogPost: blogPost,
-            Categories: cats,
+  editBlogPosts: async (req, res) => {
+    if (
+      (await isUserAuthor(req.params.id, req.user.id)) ||
+      (await isUserEditor(req.user.id)) ||
+      (await isUserAdmin(req.user.id))
+    ) {
+      var id = req.params.id;
+      BlogPost.findById(id)
+        .populate("category")
+        .then((blogPost) => {
+          Category.find().then((cats) => {
+            res.render("admin/blogPosts/edit", {
+              blogPost: blogPost,
+              Categories: cats,
+            });
           });
         });
-      });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
-  editBlogPostUpdateRoute: (req, res) => {
-    const id = req.params.id;
+  editBlogPostUpdateRoute: async (req, res) => {
+    if (
+      (await isUserAuthor(req.params.id, req.user.id)) ||
+      (await isUserEditor(req.user.id)) ||
+      (await isUserAdmin(req.user.id))
+    ) {
+      const id = req.params.id;
 
-    BlogPost.findById(id).then((blogPost) => {
-      blogPost.title = req.body.title;
-      blogPost.description = req.body.description;
-      blogPost.status = req.body.status;
-      blogPost.category = req.body.category;
+      BlogPost.findById(id).then((blogPost) => {
+        blogPost.title = req.body.title;
+        blogPost.description = req.body.description;
+        blogPost.status = req.body.status;
+        blogPost.category = req.body.category;
 
-      blogPost.save().then((updateBlogPost) => {
-        req.flash(
-          "success-message",
-          `The Blog Post ${updateBlogPost.title} has been updated.`
-        );
-        res.redirect("/admin/blogPosts");
+        blogPost.save().then((updateBlogPost) => {
+          req.flash(
+            "success-message",
+            `The Blog Post ${updateBlogPost.title} has been updated.`
+          );
+          res.redirect("/admin/blogPosts");
+        });
       });
-    });
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
   },
 
   deleteBlogPosts: async (req, res) => {
