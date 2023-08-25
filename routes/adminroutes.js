@@ -125,4 +125,9 @@ router
 
 router.route("/users/delete/:id").delete(adminController.deleteUsers);
 
+router
+  .route("/selfEdit")
+  .get(adminController.selfEdit)
+  .post(adminController.selfEditUserSubmit);
+
 module.exports = router;
