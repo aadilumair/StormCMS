@@ -130,4 +130,6 @@ router
   .get(adminController.selfEdit)
   .post(adminController.selfEditUserSubmit);
 
+router.route("/settings").get(adminController.getSettings);
+router.route("/settings/backup").post(adminController.runBackup);
 module.exports = router;

@@ -6,6 +6,7 @@ var Chapter = require("../models/ChapterModel");
 var File = require("../models/FileModel");
 var User = require("../models/UserModel");
 var BlogPost = require("../models/BlogPostModel");
+var AdmZip = require('adm-zip');
 
 var bcrypt = require("bcryptjs");
 var fs = require("fs");
@@ -1063,4 +1064,46 @@ module.exports = {
       });
     }
   },
+
+  getSettings: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+      
+      res.render("admin/settings/index");
+      
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+  },
+
+  runBackup: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+      File.find().then(files => {
+        var zip = new AdmZip();
+
+        for(let i=0;i<files.length;i++){
+          zip.addLocalFile(`./public${files[i].filepath}`);
+        }
+
+        const downloadName = `${Date.now()}.zip`;
+        const data = zip.toBuffer();
+        res.set('Content-Type','application/octet-stream');
+        res.set('Content-Disposition',`attachment; filename=${downloadName}`);
+        res.set('Content-Length',data.length);
+        res.send(data);
+      });
+      
+      
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+  },
+
 };
