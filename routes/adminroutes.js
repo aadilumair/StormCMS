@@ -132,4 +132,5 @@ router
 
 router.route("/settings").get(adminController.getSettings);
 router.route("/settings/backup").post(adminController.runBackup);
+router.route("/settings/importBackup").post(adminController.importBackup);
 module.exports = router;

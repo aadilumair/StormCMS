@@ -53,7 +53,7 @@ app.use(globalVariables);
 app.use(
   fileupload({
     limits: {
-      fileSize: 3000000, //1mb
+      fileSize: 500000000, //500mb
     },
     abortOnLimit: true,
   })

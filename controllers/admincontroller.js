@@ -6,7 +6,8 @@ var Chapter = require("../models/ChapterModel");
 var File = require("../models/FileModel");
 var User = require("../models/UserModel");
 var BlogPost = require("../models/BlogPostModel");
-var AdmZip = require('adm-zip');
+var AdmZip = require("adm-zip");
+var Decompress = require("decompress");
 
 var bcrypt = require("bcryptjs");
 var fs = require("fs");
@@ -17,6 +18,7 @@ var {
   isUserEditor,
   isUserAuthor,
 } = require("../config/customFunctions");
+const decompress = require("decompress");
 
 module.exports = {
   index: (req, res) => {
@@ -1067,9 +1069,7 @@ module.exports = {
 
   getSettings: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-      
       res.render("admin/settings/index");
-      
     } else {
       req.flash(
         "error-message",
@@ -1081,22 +1081,20 @@ module.exports = {
 
   runBackup: async (req, res) => {
     if (await isUserAdmin(req.user.id)) {
-      File.find().then(files => {
+      File.find().then((files) => {
         var zip = new AdmZip();
 
-        for(let i=0;i<files.length;i++){
+        for (let i = 0; i < files.length; i++) {
           zip.addLocalFile(`./public${files[i].filepath}`);
         }
 
         const downloadName = `${Date.now()}.zip`;
         const data = zip.toBuffer();
-        res.set('Content-Type','application/octet-stream');
-        res.set('Content-Disposition',`attachment; filename=${downloadName}`);
-        res.set('Content-Length',data.length);
+        res.set("Content-Type", "application/octet-stream");
+        res.set("Content-Disposition", `attachment; filename=${downloadName}`);
+        res.set("Content-Length", data.length);
         res.send(data);
       });
-      
-      
     } else {
       req.flash(
         "error-message",
@@ -1106,4 +1104,53 @@ module.exports = {
     }
   },
 
+  importBackup: async (req, res) => {
+    if (await isUserAdmin(req.user.id)) {
+      let filename = "";
+
+      console.log(req.files); //remove in prod
+
+      if (!isEmpty(req.files)) {
+        let File = req.files.uploadedFile;
+        let timestamp = Date.now();
+        filename = File.name;
+        let uploadDir = "./public/uploads/";
+
+        File.mv(uploadDir + filename, (err) => {
+          if (err) throw err;
+        });
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        (async () => {
+          try {
+            const files = await decompress(uploadDir + filename, uploadDir, {
+              map: (file) => {
+                if (file.type === "file" && file.path.endsWith("/")) {
+                  file.type = "directory";
+                }
+                return file;
+              },
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        })();
+        fs.unlink(uploadDir + filename, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          //file removed
+        });
+        req.flash("success-message", `Zip import successful.`);
+        res.redirect("/admin/settings");
+      }
+    } else {
+      req.flash(
+        "error-message",
+        `You do not have access to this part of the site.`
+      );
+      res.redirect("/admin");
+    }
+  },
 };

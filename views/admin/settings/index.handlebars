@@ -1,11 +1,34 @@
 <div class="container">
-    <h1>Settings</h1>
-    <br>
-
-    <h2>Backup Files</h2>
-    <p>Warning: Downloading large amounts of files may slow down server</p>
-    <form action="settings/backup" method="post">
+  <h1>Settings</h1>
+  <br />
+  <div class="row p-4">
+    <div class="col-md-10">
+      <h2>Backup Files</h2>
+      <p>Warning: Downloading large amounts of files may slow down server</p>
+      <form action="settings/backup" method="post">
         <button class="btn btn-sm btn-warning" type="submit">Download Zip</button>
-    </form>
+      </form>
+      <br />
 
+      <h2>Import Files Backup</h2>
+      <p>Warning: When you click upload, it may hang for a bit to upload and then will have a 5 second delay to process files</p>
+      <form
+        action="/admin/settings/importBackup"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="file">File Upload (File must be smaller than 3MB)</label>
+          <input
+            type="file"
+            class="form-control"
+            id="file"
+            name="uploadedFile"
+            required
+          />
+        </div>
+        <button class="btn btn-sm btn-warning" type="submit">Upload File</button>
+      </form>
+    </div>
+  </div>
 </div>
